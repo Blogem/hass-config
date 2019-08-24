@@ -1,0 +1,16 @@
+name: Relax
+entities:
+  switch.keuken_sfeer:
+    state: on
+  switch.av_tafellamp:
+    state: on
+  light.bureau:
+    state: on
+    brightness: 25
+    rgb_color: [255, 96, 0]
+  light.av_meubel:
+    state: on
+    brightness: 50
+    rgb_color: [255, 149, 50]
+  light.keuken_werk:
+    state: off

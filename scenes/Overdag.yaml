@@ -1,0 +1,8 @@
+name: Overdag
+entities:
+  switch.keuken_sfeer:
+    state: off
+  light.keuken_werk:
+    state: on
+    brightness: 240
+    color_temp: 263

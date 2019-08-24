@@ -1,0 +1,56 @@
+# speel concertzender op chromebitch
+concertzender:
+  alias: "Concertzender Live"
+  sequence:
+    - service: hdmi_cec.power_on
+      data:
+        device: Onkyo
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.chromebitch
+        volume_level: 0.01
+    - delay: '00:00:01'
+    - service: media_player.play_media
+      data:
+        entity_id: media_player.chromebitch
+        media_content_id: http://streams.greenhost.nl:8080/live
+        media_content_type: 'audio/mp4'
+    - service: hdmi_cec.power_on
+      data:
+        device: Onkyo
+    - delay: '00:00:05'
+    - service: hdmi_cec.power_on
+      data:
+        device: Onkyo
+        
+# speel spotify op Chromecast af
+spotify2chromecast:
+  alias: "Speel spotify op Chromecast af"
+  sequence:
+    - service: hdmi_cec.power_on
+      data:
+        device: Onkyo
+    - service: spotcast.start
+      data:
+        entity_id: media_player.chromebitch
+    - service: hdmi_cec.power_on
+      data:
+        device: Onkyo
+    - delay: '00:00:05'
+    - service: hdmi_cec.power_on
+      data:
+        device: Onkyo
+        
+        
+        
+        
+        
+#automation om fluxer aan te zetten (hoort in automations.yaml, maar die verwijderd comments)
+#- alias: enable flux on platform start
+#  trigger:
+#  - event: start
+#    platform: homeassistant
+#  action:
+#  - data:
+#      entity_id: switch.fluxer
+#    service: switch.turn_on

@@ -1,0 +1,12 @@
+# for wake up light
+alarm_clock:
+  name: "Wake-up Light"
+  entities: # Add all entities here that should be part of the widget
+    - input_datetime.wakeup_time
+    - input_boolean.wakeup_enabled
+    - input_boolean.wakeup_weekend
+wakeup_lights:
+  name: "Wake-up Lights"
+  entities:
+    - light.av_meubel
+    - light.bureau

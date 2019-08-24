@@ -1,0 +1,40 @@
+  # - platform: template
+    # lights:
+      # bureau:
+        # friendly_name: "Bureau"
+        # turn_on:
+          # service: light.turn_on
+          # entity_id: light.bureau
+        # turn_off:
+          # service: light.turn_off
+          # entity_id: light.bureau
+        # set_level:
+          # service: light.turn_on
+          # data_template:
+            # brightness: "{{ brightness }}"
+            # entity_id: light.bureau
+      # bureau_energize:
+        # friendly_name: "Bureau Energize"
+        # turn_on:
+          # service: light.turn_on
+          # entity_id: light.bureau
+        # turn_off:
+          # service: light.turn_off
+          # entity_id: light.bureau
+        # set_level:
+          # service: light.turn_on
+          # data_template:
+            # profile: energize
+#            entity_id: light.bureau
+#light.bureau.default:
+#   platform: tradfri
+#   friendly_name: Bureau
+#   profile: energize
+#light.bureau.default:
+#  - platform: tradfri
+#    friendly_name: Bureau
+#    profile: energize
+#light.av_meubel.default:
+#  -platform: tradfri
+#   friendly_name: AV meubel
+#   profile: energize

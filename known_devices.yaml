@@ -1,0 +1,24 @@
+
+nokia_7_1:
+  hide_if_away: false
+  icon:
+  mac: BT_AC:57:75:12:FD:2A
+  name: Nokia 7.1
+  picture:
+  track: true
+
+tv_ue40j6200:
+  hide_if_away: false
+  icon:
+  mac: BT_14:BB:6E:89:E2:72
+  name: '[TV] UE40J6200'
+  picture:
+  track: false
+
+zumo_3866736706:
+  hide_if_away: false
+  icon:
+  mac: BT_10:C6:FC:48:3F:AD
+  name: 'zumo #3866736706'
+  picture:
+  track: false

@@ -1,0 +1,148 @@
+- id: '1566066851941'
+  alias: Away
+  trigger:
+  - entity_id: device_tracker.nokia_7_1
+    from: home
+    platform: state
+    to: not_home
+  condition: []
+  action:
+  - alias: ''
+    data:
+      entity_id: group.all_lights
+    service: light.turn_off
+  - data:
+      entity_id: media_player.chromebitch
+    service: media_player.turn_off
+  - data:
+      device: Onkyo
+    service: hdmi_cec.standby
+  - data:
+      entity_id: group.all_switches
+    service: switch.turn_off
+- alias: Home (avond)
+  trigger:
+  - entity_id: device_tracker.nokia_7_1
+    from: not_home
+    platform: state
+    to: home
+  condition:
+  - condition: state
+    state: below_horizon
+    entity_id: sun.sun
+  action:
+  - data:
+      entity_id: media_player.chromebitch
+    service: spotcast.start
+  - data:
+      entity_id: scene.avond
+    service: scene.turn_on
+- id: '1566071067769'
+  alias: Avond
+  trigger:
+  - event: sunset
+    offset: -00:07:00
+    platform: sun
+  condition:
+  - condition: state
+    entity_id: device_tracker.nokia_7_1
+    state: home
+  action:
+  - data:
+      entity_id: scene.avond
+    service: scene.turn_on
+- alias: Webhook Call Service
+  initial_state: 'on'
+  trigger:
+    platform: webhook
+    webhook_id: !secret generic_webhook
+  action:
+    service_template: '{{ trigger.json.service }}'
+    data_template:
+      entity_id: '{{ trigger.json.entity_id }}'
+  id: 0b5c58ac9553406fb82637c0285449cb
+- id: '1566074829768'
+  alias: Tasker uit
+  trigger:
+  - platform: webhook
+    webhook_id: !secret tasker_uit_webhook
+  condition: []
+  action:
+  - data:
+      entity_id: scene.uit
+    service: scene.turn_on
+  - data:
+      entity_id: media_player.chromebitch
+    service: media_player.turn_off
+  - data:
+      device: Onkyo
+    service: hdmi_cec.standby
+- id: '1566142801325'
+  alias: Home (dag)
+  trigger:
+  - entity_id: device_tracker.nokia_7_1
+    from: not_home
+    platform: state
+    to: home
+  condition:
+  - condition: state
+    state: above_horizon
+    entity_id: sun.sun
+  action:
+  - data:
+      entity_id: media_player.chromebitch
+    service: spotcast.start
+  - data:
+      entity_id: scene.overdag
+    service: scene.turn_on
+- alias: Wake-up light
+  trigger:
+    platform: template
+    value_template: '{{ states(''sensor.time'') == (states.input_datetime.wakeup_time.attributes.timestamp
+      | int | timestamp_custom(''%H:%M'', False)) }}'
+  condition:
+  - condition: state
+    entity_id: device_tracker.nokia_7_1
+    state: home
+  - condition: state
+    entity_id: input_boolean.wakeup_enabled
+    state: 'on'
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: input_boolean.wakeup_weekend
+      state: 'on'
+    - condition: time
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+  action:
+  - service: light.turn_on
+    entity_id: group.wakeup_lights
+    data:
+      brightness: 0
+  - service: light.turn_on
+    entity_id: group.wakeup_lights
+    data:
+      transition: 1800
+      brightness: 240
+  - delay: 00:15:00
+  - service: script.concertzender
+  - service: python_script.volume_transition
+    data:
+      entity_id: media_player.chromebitch
+      transition_duration: 900
+      sleep_delay: 3
+      start_level: 0.01
+      end_level: 0.5
+#- alias: enable flux on platform start
+#  trigger:
+#  - event: start
+#    platform: homeassistant
+#  action:
+#  - data:
+#      entity_id: switch.fluxer
+#    service: switch.turn_on

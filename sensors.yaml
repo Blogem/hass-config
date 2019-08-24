@@ -1,0 +1,4 @@
+# for wake up light
+- platform: time_date
+  display_options:
+    - 'time'

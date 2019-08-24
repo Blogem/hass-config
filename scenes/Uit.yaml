@@ -1,0 +1,12 @@
+name: Uit
+entities:
+  switch.keuken_sfeer:
+    state: off
+  switch.av_tafellamp:
+    state: off
+  light.bureau:
+    state: off
+  light.av_meubel:
+    state: off
+  light.keuken_werk:
+    state: off
