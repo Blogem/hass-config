@@ -1,1 +1,71 @@
-../.homeassistant/configuration.yaml
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+logger:
+  default: warning
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+http:
+  base_url: pi.troep.net:8123
+  #use_x_forwarded_for: true
+  #trusted_proxies: 127.0.0.1
+  
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include_dir_list scenes
+light: !include lights.yaml
+sensor: !include sensors.yaml
+switch: !include switches.yaml
+python_script: !include_dir_list python_scripts
+
+device_tracker:
+  - platform: bluetooth_tracker
+    interval_seconds: 10
+    consider_home: 180
+    new_device_defaults:
+      track_new_devices: false
+
+hdmi_cec:
+  devices:
+    5: Onkyo
+
+spotcast:
+  username: !secret spotify_username
+  password: !secret spotify_password
+    
+media_player:
+  - platform: spotify
+    client_id: !secret spotify_api_client_id
+    client_secret: !secret spotify_api_client_secret
+    aliases:
+      edf51c6b051b3058b4d1ef524ec1b94e: Chromebitch
+
+hacs:
+  token: !secret hacs_token      
+      
+
+#wake up light: https://www.wouterbulten.nl/blog/tech/custom-wake-up-light-with-home-assistant/
+input_boolean :
+  wakeup_enabled:
+    name: "Wake-up light"
+    #initial: on
+    icon: mdi:theme-light-dark
+  wakeup_weekend:
+    name: "Enable Wake-up on weekends"
+    #initial: off
+    icon: mdi:calendar-blank
+    
+input_datetime:
+  wakeup_time:
+    name: "Start lights at"
+    has_time: true
+    has_date: false
+    #initial: "07:20"
+    
