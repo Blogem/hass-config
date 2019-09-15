@@ -32,11 +32,10 @@
     entity_id: sun.sun
   action:
   - data:
-      entity_id: media_player.chromebitch
-    service: spotcast.start
-  - data:
       entity_id: scene.avond
     service: scene.turn_on
+  - service: script.spotify2chromecast
+  id: e53a8b9a452d4a5f9f8cc2fbbd948681
 - id: '1566071067769'
   alias: Avond
   trigger:
@@ -55,17 +54,17 @@
   initial_state: 'on'
   trigger:
     platform: webhook
-    webhook_id: !secret generic_webhook
+    webhook_id: !secret webhook_generic
   action:
     service_template: '{{ trigger.json.service }}'
     data_template:
       entity_id: '{{ trigger.json.entity_id }}'
   id: 0b5c58ac9553406fb82637c0285449cb
 - id: '1566074829768'
-  alias: Tasker uit
+  alias: Tasker Alles uit
   trigger:
   - platform: webhook
-    webhook_id: !secret tasker_uit_webhook
+    webhook_id: !secret webhook_tasker_uit
   condition: []
   action:
   - data:
@@ -90,11 +89,9 @@
     entity_id: sun.sun
   action:
   - data:
-      entity_id: media_player.chromebitch
-    service: spotcast.start
-  - data:
       entity_id: scene.overdag
     service: scene.turn_on
+  - service: script.spotify2chromecast
 - alias: Wake-up light
   trigger:
     platform: template
@@ -138,11 +135,135 @@
       sleep_delay: 3
       start_level: 0.01
       end_level: 0.5
-#- alias: enable flux on platform start
-#  trigger:
-#  - event: start
-#    platform: homeassistant
-#  action:
-#  - data:
-#      entity_id: switch.fluxer
-#    service: switch.turn_on
+  id: 47d31d79b0e1410b8c4f5cb311dc92dd
+- alias: Zigbee2mqtt Log Level
+  initial_state: 'on'
+  trigger:
+    platform: state
+    entity_id: input_select.zigbee2mqtt_log_level
+  action:
+  - service: mqtt.publish
+    data:
+      payload_template: '{{ states(''input_select.zigbee2mqtt_log_level'') }}'
+      topic: zigbee2mqtt/bridge/config/log_level
+  id: 6b75adc07fef47a4818a22b47fed6015
+- id: zigbee_join_enabled
+  alias: Zigbee Join Enabled
+  hide_entity: true
+  trigger:
+    platform: state
+    entity_id: switch.zigbee2mqtt_main_join
+    to: 'on'
+  action:
+    service: timer.start
+    entity_id: timer.zigbee_permit_join
+- id: zigbee_join_disabled
+  alias: Zigbee Join Disabled
+  hide_entity: true
+  trigger:
+  - platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.zigbee_permit_join
+  - platform: state
+    entity_id: switch.zigbee2mqtt_main_join
+    to: 'off'
+  action:
+  - service: timer.cancel
+    data:
+      entity_id: timer.zigbee_permit_join
+  - service: switch.turn_off
+    entity_id: switch.zigbee2mqtt_main_join
+- id: Plafondlamp_bij_donker_lx
+  alias: Plafondlamp aan als het donker is (lx)
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.bewegingsmelder_illuminance
+    below: 12
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: light.keuken_werk
+      state: 'on'
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: light.av_meubel
+        state: 'off'
+      - condition: state
+        entity_id: switch.av_tafellamp
+        state: 'off'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.woonkamer_plafond
+- id: Plafondlamp_bij_donker_occupancy
+  alias: Plafondlamp aan als het donker is (occ)
+  trigger:
+    platform: state
+    entity_id: binary_sensor.bewegingsmelder_occupancy
+    from: 'off'
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: light.keuken_werk
+      state: 'on'
+    - condition: numeric_state
+      entity_id: sensor.bewegingsmelder_illuminance
+      below: 12
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: light.av_meubel
+        state: 'off'
+      - condition: state
+        entity_id: switch.av_tafellamp
+        state: 'off'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.woonkamer_plafond
+- id: Plafondlamp_bij_licht_lx
+  alias: Plafondlamp aan als het te licht is
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.bewegingsmelder_illuminance
+    above: 30
+  condition:
+  - condition: state
+    entity_id: switch.woonkamer_plafond
+    state: 'on'
+  action:
+  - service: switch.turn_off
+    entity_id: switch.woonkamer_plafond
+- id: '1568405264320'
+  alias: Tasker Keuken Werk toggle
+  trigger:
+  - platform: webhook
+    webhook_id: !secret webhook_tasker_keukenwerktoggle
+  condition: []
+  action:
+  - alias: ''
+    data:
+      entity_id: light.keuken_werk
+    service: light.toggle
+- id: '1568405354120'
+  alias: Tasker Woonkamer plafond toggle
+  trigger:
+  - platform: webhook
+    webhook_id: !secret webhook_tasker_woonkamerplafondtoggle
+  condition: []
+  action:
+  - data:
+      entity_id: switch.woonkamer_plafond
+    service: switch.toggle
+- id: '1568406229777'
+  alias: Tasker Radio toggle
+  trigger:
+  - platform: webhook
+    webhook_id: !secret webhook_tasker_radiotoggle
+  condition: []
+  action:
+  - data: {}
+    service: script.concertzender

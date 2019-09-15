@@ -27,6 +27,9 @@ concertzender:
 spotify2chromecast:
   alias: "Speel spotify op Chromecast af"
   sequence:
+    - condition: state
+      entity_id: media_player.spotify
+      state: playing
     - service: hdmi_cec.power_on
       data:
         device: Onkyo
@@ -42,7 +45,25 @@ spotify2chromecast:
         device: Onkyo
         
         
-        
+# Zigbee2mqtt - Scripts for renaming & removing devices
+zigbee2mqtt_rename:
+  alias: Zigbee2mqtt Rename
+  sequence:
+    service: mqtt.publish
+    data_template:
+      topic: zigbee2mqtt/bridge/config/rename
+      payload_template: >-
+        {
+          "old": "{{ states.input_text.zigbee2mqtt_old_name.state | string }}",
+          "new": "{{ states.input_text.zigbee2mqtt_new_name.state | string }}"
+        }
+zigbee2mqtt_remove:
+  alias: Zigbee2mqtt Remove
+  sequence:
+    service: mqtt.publish
+    data_template:
+      topic: zigbee2mqtt/bridge/config/remove
+      payload_template: "{{ states.input_text.zigbee2mqtt_remove.state | string }}"
         
         
 #automation om fluxer aan te zetten (hoort in automations.yaml, maar die verwijderd comments)
@@ -54,3 +75,12 @@ spotify2chromecast:
 #  - data:
 #      entity_id: switch.fluxer
 #    service: switch.turn_on
+flash_avmeubel:
+  alias: Flash AV-meubel
+  sequence:
+    - service: light.turn_on
+      entity_id: light.av_meubel
+    - delay: '00:00:01'
+    - service: light.turn_off
+      entity_id: light.av_meubel
+

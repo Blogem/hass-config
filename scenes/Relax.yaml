@@ -4,6 +4,10 @@ entities:
     state: on
   switch.av_tafellamp:
     state: on
+  light.livingcolors:
+    state: on
+    brightness: 35
+    xy_color: [0.582, 0.395]
   light.bureau:
     state: on
     brightness: 25
@@ -13,4 +17,6 @@ entities:
     brightness: 50
     rgb_color: [255, 149, 50]
   light.keuken_werk:
+    state: off
+  switch.woonkamer_plafond:
     state: off

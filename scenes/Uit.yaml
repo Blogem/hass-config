@@ -10,3 +10,7 @@ entities:
     state: off
   light.keuken_werk:
     state: off
+  light.livingcolors:
+    state: off
+  switch.woonkamer_plafond:
+    state: off

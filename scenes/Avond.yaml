@@ -1,5 +1,9 @@
 name: Avond
 entities:
+  light.livingcolors:
+    state: on
+    brightness: 97
+    xy_color: [0.492, 0.474]
   light.keuken_werk:
     state: on
     brightness: 182

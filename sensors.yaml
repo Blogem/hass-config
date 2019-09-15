@@ -2,3 +2,24 @@
 - platform: time_date
   display_options:
     - 'time'
+
+# spotcast
+- platform: spotcast
+
+# Zigbee2mqtt -  Sensor for monitoring the bridge state
+- platform: mqtt
+  name: Zigbee2mqtt Bridge state
+  state_topic: "zigbee2mqtt/bridge/state"
+  icon: mdi:router-wireless
+# Zigbee2mqtt -  Sensor for Showing the Zigbee2mqtt Version
+- platform: mqtt
+  name: Zigbee2mqtt Version
+  state_topic: "zigbee2mqtt/bridge/config"
+  value_template: "{{ value_json.version }}"
+  icon: mdi:zigbee
+# Zigbee2mqtt -  Sensor for Showing the Coordinator Version
+- platform: mqtt
+  name: Coordinator Version
+  state_topic: "zigbee2mqtt/bridge/config"
+  value_template: "{{ value_json.coordinator }}"
+  icon: mdi:chip
