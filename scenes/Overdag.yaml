@@ -1,14 +1,8 @@
 name: Overdag
 entities:
-  script.scene_overdag:
-    state: on
   switch.keuken_sfeer:
     state: off
-  light.livingcolors:
-    state: off
-  light.av_meubel:
-    state: off
-  light.bureau:
-    state: off
-  switch.av_tafellamp:
-    state: off
+  light.keuken_werk:
+    state: on
+    brightness: 240
+    color_temp: 263
