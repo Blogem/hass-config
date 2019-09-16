@@ -1,21 +1,16 @@
 name: Relax
 entities:
+  script.scene_relax:
+    state: on
   switch.keuken_sfeer:
     state: on
   switch.av_tafellamp:
     state: on
   light.livingcolors:
     state: on
+    transition: 2
     brightness: 35
     xy_color: [0.582, 0.395]
-  light.bureau:
-    state: on
-    brightness: 25
-    rgb_color: [255, 96, 0]
-  light.av_meubel:
-    state: on
-    brightness: 50
-    rgb_color: [255, 149, 50]
   light.keuken_werk:
     state: off
   switch.woonkamer_plafond:

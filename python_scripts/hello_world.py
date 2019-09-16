@@ -1,3 +1,5 @@
 name = data.get('name', 'world')
 logger.error("Hello {}".format(name))
 hass.bus.fire(name, { "wow": "from a Python script!" })
+time.sleep(5)
+logger.error("Bye {}".format(name))

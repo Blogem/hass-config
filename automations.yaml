@@ -179,7 +179,7 @@
   trigger:
     platform: numeric_state
     entity_id: sensor.bewegingsmelder_illuminance
-    below: 12
+    below: 16
   condition:
     condition: and
     conditions:
@@ -212,7 +212,7 @@
       state: 'on'
     - condition: numeric_state
       entity_id: sensor.bewegingsmelder_illuminance
-      below: 12
+      below: 16
     - condition: or
       conditions:
       - condition: state

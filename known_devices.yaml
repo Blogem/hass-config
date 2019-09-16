@@ -22,3 +22,11 @@ zumo_3866736706:
   name: 'zumo #3866736706'
   picture:
   track: false
+
+hi_laptop_jln:
+  hide_if_away: false
+  icon:
+  mac: BT_B8:08:CF:52:FA:6E
+  name: HI-LAPTOP-JLN
+  picture:
+  track: false
