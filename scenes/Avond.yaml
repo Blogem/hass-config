@@ -1,21 +1,12 @@
 name: Avond
 entities:
+  script.scene_avond:
+    state: on
   light.livingcolors:
     state: on
+    transition: 2
     brightness: 97
     xy_color: [0.492, 0.474]
-  light.keuken_werk:
-    state: on
-    brightness: 182
-    color_temp: 403
-  light.av_meubel:
-    state: on
-    brightness: 203
-    rgb_color: [255, 170, 88]
-  light.bureau:
-    state: on
-    brightness: 161
-    rgb_color: [255, 145, 36]
   switch.keuken_sfeer:
     state: off
   switch.av_tafellamp:
