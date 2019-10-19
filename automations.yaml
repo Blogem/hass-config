@@ -1,7 +1,7 @@
 - id: '1566066851941'
   alias: Away
   trigger:
-  - entity_id: device_tracker.nokia_7_1
+  - entity_id: person.jochem
     from: home
     platform: state
     to: not_home
@@ -15,14 +15,14 @@
       entity_id: media_player.chromebitch
     service: media_player.turn_off
   - data:
-      device: Onkyo
-    service: hdmi_cec.standby
+      entity_id: switch.onkyo
+    service: switch.turn_off
   - data:
       entity_id: group.all_switches
     service: switch.turn_off
 - alias: Home (avond)
   trigger:
-  - entity_id: device_tracker.nokia_7_1
+  - entity_id: person.jochem
     from: not_home
     platform: state
     to: home
@@ -44,7 +44,7 @@
     platform: sun
   condition:
   - condition: state
-    entity_id: device_tracker.nokia_7_1
+    entity_id: person.jochem
     state: home
   action:
   - data:
@@ -74,12 +74,12 @@
       entity_id: media_player.chromebitch
     service: media_player.turn_off
   - data:
-      device: Onkyo
-    service: hdmi_cec.standby
+      entity_id: switch.onkyo
+    service: switch.turn_off
 - id: '1566142801325'
   alias: Home (dag)
   trigger:
-  - entity_id: device_tracker.nokia_7_1
+  - entity_id: person.jochem
     from: not_home
     platform: state
     to: home
@@ -99,7 +99,7 @@
       | int | timestamp_custom(''%H:%M'', False)) }}'
   condition:
   - condition: state
-    entity_id: device_tracker.nokia_7_1
+    entity_id: person.jochem
     state: home
   - condition: state
     entity_id: input_boolean.wakeup_enabled
@@ -179,7 +179,7 @@
   trigger:
     platform: numeric_state
     entity_id: sensor.bewegingsmelder_illuminance
-    below: 16
+    below: 50
   condition:
     condition: and
     conditions:
@@ -210,9 +210,42 @@
     - condition: state
       entity_id: light.keuken_werk
       state: 'on'
+    - condition: state
+      entity_id: switch.woonkamer_plafond
+      state: 'off'
     - condition: numeric_state
       entity_id: sensor.bewegingsmelder_illuminance
-      below: 16
+      below: 50
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: light.av_meubel
+        state: 'off'
+      - condition: state
+        entity_id: switch.av_tafellamp
+        state: 'off'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.woonkamer_plafond
+- id: Plafondlamp_bij_donker_occupancy
+  alias: Plafondlamp aan als keukenwerk aan gaat en het donker is en er al beweging was
+  trigger:
+    platform: state
+    entity_id: light.keuken_werk
+    from: 'off'
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.bewegingsmelder_occupancy
+      state: 'on'
+    - condition: state
+      entity_id: switch.woonkamer_plafond
+      state: 'off'
+    - condition: numeric_state
+      entity_id: sensor.bewegingsmelder_illuminance
+      below: 50
     - condition: or
       conditions:
       - condition: state
@@ -225,7 +258,7 @@
   - service: switch.turn_on
     entity_id: switch.woonkamer_plafond
 - id: Plafondlamp_bij_licht_lx
-  alias: Plafondlamp aan als het te licht is
+  alias: Plafondlamp uit als het te licht is
   trigger:
     platform: numeric_state
     entity_id: sensor.bewegingsmelder_illuminance
@@ -267,3 +300,39 @@
   action:
   - data: {}
     service: script.concertzender
+- id: onkyo_start_playing
+  alias: Zet onkyo aan als Chromebitch afspeelt
+  trigger:
+    platform: state
+    entity_id: media_player.chromebitch
+    to: 'playing'
+  condition:
+  - condition: state
+    state: 'off'
+    entity_id: switch.onkyo
+  action:
+  - service: switch.turn_on
+    entity_id: switch.onkyo
+- id: onkyo_stop_playing_delay_timer
+  alias: Start timer voor dat Onkyo definitief uit gaat
+  trigger:
+    platform: state
+    entity_id: media_player.chromebitch
+    to: 'off'
+  action:
+    service: timer.start
+    entity_id: timer.onkyo
+- id: onkyo_stop_playing
+  alias: Zet onkyo uit als Chromebitch uit gaat
+  trigger:
+    platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.onkyo
+  condition:
+  - condition: state
+    state: 'off'
+    entity_id: media_player.chromebitch
+  action:
+  - service: switch.turn_off
+    entity_id: switch.onkyo

@@ -26,6 +26,7 @@ light: !include lights.yaml
 sensor: !include sensors.yaml
 switch: !include switches.yaml
 python_script: !include_dir_list python_scripts
+device_tracker: !include device_tracker.yaml
 
 mqtt:
   discovery: true
@@ -36,13 +37,6 @@ mqtt:
   will_message:
     topic: 'hass/status'
     payload: 'offline'
-
-device_tracker:
-  - platform: bluetooth_tracker
-    interval_seconds: 10
-    consider_home: 180
-    new_device_defaults:
-      track_new_devices: false
 
 hdmi_cec:
   devices:
@@ -63,8 +57,8 @@ hacs:
   token: !secret hacs_token      
       
 
-#wake up light: https://www.wouterbulten.nl/blog/tech/custom-wake-up-light-with-home-assistant/
 input_boolean :
+#wake up light: https://www.wouterbulten.nl/blog/tech/custom-wake-up-light-with-home-assistant/
   wakeup_enabled:
     name: "Wake-up light"
     #initial: on
@@ -110,3 +104,7 @@ timer:
     name: Time remaining
     duration: 120
 # /ZIGBEE2MQTT    
+#timer voor onkyo schakelen
+  onkyo:
+    name: Onkyo power delay
+    duration: '00:00:17'

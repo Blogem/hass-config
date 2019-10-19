@@ -9,5 +9,5 @@ entities:
     xy_color: [0.492, 0.474]
   switch.keuken_sfeer:
     state: off
-  switch.av_tafellamp:
+  switch.woonkamer_plafond:
     state: on
