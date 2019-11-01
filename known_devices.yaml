@@ -62,3 +62,19 @@ jbl_charge_3:
   name: JBL Charge 3
   picture:
   track: false
+
+laptop_cv29m47u:
+  hide_if_away: false
+  icon:
+  mac: BT_00:1A:7D:DA:71:06
+  name: LAPTOP-CV29M47U
+  picture:
+  track: false
+
+hi_laptop_jln1:
+  hide_if_away: false
+  icon:
+  mac: BT_04:ED:33:A0:3B:C3
+  name: HI-LAPTOP-JLN1
+  picture:
+  track: false

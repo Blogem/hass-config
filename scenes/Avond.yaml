@@ -4,10 +4,12 @@ entities:
     state: on
   light.livingcolors:
     state: on
-    transition: 2
+    transition: 5
     brightness: 97
     xy_color: [0.492, 0.474]
   switch.keuken_sfeer:
     state: off
   switch.woonkamer_plafond:
     state: on
+  switch.av_tafellamp:
+    state: off
