@@ -27,6 +27,8 @@ sensor: !include sensors.yaml
 switch: !include switches.yaml
 python_script: !include_dir_list python_scripts
 device_tracker: !include device_tracker.yaml
+input_boolean: !include input_boolean.yaml
+input_datetime: !include input_datetime.yaml
 
 mqtt:
   discovery: true
@@ -55,26 +57,6 @@ media_player:
 
 hacs:
   token: !secret hacs_token      
-      
-
-input_boolean :
-#wake up light: https://www.wouterbulten.nl/blog/tech/custom-wake-up-light-with-home-assistant/
-  wakeup_enabled:
-    name: "Wake-up light"
-    #initial: on
-    icon: mdi:theme-light-dark
-  wakeup_weekend:
-    name: "Enable Wake-up on weekends"
-    #initial: off
-    icon: mdi:calendar-blank
-    
-input_datetime:
-  wakeup_time:
-    name: "Start lights at"
-    has_time: true
-    has_date: false
-    #initial: "07:20"
-
     
 # ZIGBEE2MQTT    
 # Input select for Zigbee2mqtt debug level
@@ -104,6 +86,7 @@ timer:
     name: Time remaining
     duration: 120
 # /ZIGBEE2MQTT    
+
 #timer voor onkyo schakelen
   onkyo:
     name: Onkyo power delay

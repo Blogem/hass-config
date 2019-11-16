@@ -1,0 +1,6 @@
+#wake up light: https://www.wouterbulten.nl/blog/tech/custom-wake-up-light-with-home-assistant/
+wakeup_time:
+  name: "Start lights at"
+  has_time: true
+  has_date: false
+  #initial: "07:20"

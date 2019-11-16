@@ -1,0 +1,12 @@
+#wake up light: https://www.wouterbulten.nl/blog/tech/custom-wake-up-light-with-home-assistant/
+wakeup_enabled:
+  name: "Wake-up light"
+  #initial: on
+  icon: mdi:theme-light-dark
+wakeup_weekend:
+  name: "Enable Wake-up on weekends"
+  #initial: off
+  icon: mdi:calendar-blank
+  
+radiator_woonkamer:
+  name: "Radiator Woonkamer"
