@@ -8,7 +8,7 @@ entities:
     state: on
   light.livingcolors:
     state: on
-    transition: 2
+    transition: 5
     brightness: 35
     xy_color: [0.582, 0.395]
   light.keuken_werk:
