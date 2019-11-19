@@ -162,6 +162,30 @@
   - data:
       entity_id: scene.Relax
     service: scene.turn_on
+
+- id: 'tasker_scenenachtlicht'
+  alias: Tasker Scene Nachtlicht
+  trigger:
+  - platform: webhook
+    webhook_id: !secret webhook_tasker_scenenachtlicht
+  action:
+  - data:
+      entity_id: scene.Nachtlicht
+    service: scene.turn_on
+
+- id: 'tasker_nachtlicht'
+  alias: Tasker Nachtlicht
+  trigger:
+  - platform: webhook
+    webhook_id: !secret webhook_tasker_nachtlicht
+  condition:
+  - condition: state
+    state: 'off'
+    entity_id: group.all_lights
+  action:
+  - data:
+      entity_id: scene.Nachtlicht
+    service: scene.turn_on
       
 - id: '1566142801325'
   alias: Home (dag)
@@ -426,4 +450,18 @@
     to: 'off'
   action:
   - service: script.radiator_woonkamer_off
-    
+
+- id: spotifylaptop2chromebitch
+  alias: Speel muziek van laptop op Chromcast
+  trigger:
+    platform: state
+    entity_id: media_player.spotify
+    to: playing
+  condition:
+  - condition: state
+    entity_id: person.jochem
+    state: home
+  - condition: template
+    value_template: "{{ is_state_attr('media_player.spotify', 'source', 'HI-LAPTOP-JLN1') }}" 
+  action:
+  - service: script.spotify2chromecast

@@ -190,6 +190,16 @@ scene_relax:
         r: 255
         g: 96
         b: 0
+        
+scene_nachtlicht:
+  sequence:
+    - service: script.turn_on_ikea_light_rgb_color
+      data_template:
+        entity_id: light.av_meubel
+        brightness_pct: 1
+        r: 255
+        g: 96
+        b: 0
 
 radiator_woonkamer_on:
   sequence:

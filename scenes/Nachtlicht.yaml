@@ -1,0 +1,14 @@
+name: Nachtlicht
+entities:
+  script.scene_nachtlicht:
+    state: on
+  switch.keuken_sfeer:
+    state: off
+  switch.av_tafellamp:
+    state: off
+  light.livingcolors:
+    state: off
+  light.keuken_werk:
+    state: off
+  switch.woonkamer_plafond:
+    state: off
