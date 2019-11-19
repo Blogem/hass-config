@@ -7,6 +7,9 @@
     to: not_home
   condition: []
   action:
+  - data:
+      entity_id: input_boolean.radiator_woonkamer
+    service: input_boolean.turn_off
   - alias: ''
     data:
       entity_id: group.all_lights
@@ -20,9 +23,6 @@
   - data:
       entity_id: group.all_switches
     service: switch.turn_off
-  - service: input_boolean.turn_off
-    data:
-      entity_id: input_boolean.radiator_woonkamer
 
 - alias: Home (avond)
   trigger:
@@ -90,7 +90,79 @@
     data:
       entity_id: input_boolean.radiator_woonkamer
 
+- id: '1568405264320'
+  alias: Tasker Keuken Werk toggle
+  trigger:
+  - platform: webhook
+    webhook_id: !secret webhook_tasker_keukenwerktoggle
+  condition: []
+  action:
+  - alias: ''
+    data:
+      entity_id: light.keuken_werk
+    service: light.toggle
 
+- id: '1568405354120'
+  alias: Tasker Woonkamer plafond toggle
+  trigger:
+  - platform: webhook
+    webhook_id: !secret webhook_tasker_woonkamerplafondtoggle
+  condition: []
+  action:
+  - data:
+      entity_id: switch.woonkamer_plafond
+    service: switch.toggle
+
+- id: '1568406229777'
+  alias: Tasker Radio toggle
+  trigger:
+  - platform: webhook
+    webhook_id: !secret webhook_tasker_radiotoggle
+  condition: []
+  action:
+  - data: {}
+    service: script.concertzender
+
+- id: 'tasker_sceneoverdag'
+  alias: Tasker Scene Overdag
+  trigger:
+  - platform: webhook
+    webhook_id: !secret webhook_tasker_sceneoverdag
+  action:
+  - data:
+      entity_id: scene.Overdag
+    service: scene.turn_on
+
+- id: 'tasker_sceneavond'
+  alias: Tasker Scene Avond
+  trigger:
+  - platform: webhook
+    webhook_id: !secret webhook_tasker_sceneavond
+  action:
+  - data:
+      entity_id: scene.Avond
+    service: scene.turn_on
+
+- id: 'tasker_sceneavond2'
+  alias: Tasker Scene Avond2
+  trigger:
+  - platform: webhook
+    webhook_id: !secret webhook_tasker_sceneavond2
+  action:
+  - data:
+      entity_id: scene.Avond2
+    service: scene.turn_on
+    
+- id: 'tasker_scenerelax'
+  alias: Tasker Scene Relax
+  trigger:
+  - platform: webhook
+    webhook_id: !secret webhook_tasker_scenerelax
+  action:
+  - data:
+      entity_id: scene.Relax
+    service: scene.turn_on
+      
 - id: '1566142801325'
   alias: Home (dag)
   trigger:
@@ -297,39 +369,6 @@
   action:
   - service: switch.turn_off
     entity_id: switch.woonkamer_plafond
-
-- id: '1568405264320'
-  alias: Tasker Keuken Werk toggle
-  trigger:
-  - platform: webhook
-    webhook_id: !secret webhook_tasker_keukenwerktoggle
-  condition: []
-  action:
-  - alias: ''
-    data:
-      entity_id: light.keuken_werk
-    service: light.toggle
-
-- id: '1568405354120'
-  alias: Tasker Woonkamer plafond toggle
-  trigger:
-  - platform: webhook
-    webhook_id: !secret webhook_tasker_woonkamerplafondtoggle
-  condition: []
-  action:
-  - data:
-      entity_id: switch.woonkamer_plafond
-    service: switch.toggle
-
-- id: '1568406229777'
-  alias: Tasker Radio toggle
-  trigger:
-  - platform: webhook
-    webhook_id: !secret webhook_tasker_radiotoggle
-  condition: []
-  action:
-  - data: {}
-    service: script.concertzender
 
 - id: onkyo_start_playing
   alias: Zet onkyo aan als Chromebitch afspeelt

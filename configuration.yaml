@@ -30,6 +30,9 @@ device_tracker: !include device_tracker.yaml
 input_boolean: !include input_boolean.yaml
 input_datetime: !include input_datetime.yaml
 
+frontend:
+  themes: !include_dir_merge_named themes
+
 mqtt:
   discovery: true
   broker: localhost
@@ -56,7 +59,11 @@ media_player:
       edf51c6b051b3058b4d1ef524ec1b94e: Chromebitch
 
 hacs:
-  token: !secret hacs_token      
+  token: !secret hacs_token
+  sidepanel_title: HACS
+  appdaemon: True
+  python_script: True
+  theme: True
     
 # ZIGBEE2MQTT    
 # Input select for Zigbee2mqtt debug level

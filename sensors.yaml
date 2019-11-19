@@ -6,6 +6,10 @@
 # spotcast
 - platform: spotcast
 
+# usb temper
+- platform: temper
+  name: Woonkamer temperatuur
+
 # Zigbee2mqtt -  Sensor for monitoring the bridge state
 - platform: mqtt
   name: Zigbee2mqtt Bridge state
@@ -23,3 +27,29 @@
   state_topic: "zigbee2mqtt/bridge/config"
   value_template: "{{ value_json.coordinator }}"
   icon: mdi:chip
+
+# Eurotronic radiatorknop
+- platform: template
+  sensors:
+    radiatorknop_battery:
+      friendly_name: "Radiator battery"
+      entity_id: sensor.radiatorknop
+      unit_of_measurement: '%'
+      device_class: 'battery'
+      value_template: "{{ state_attr('sensor.radiatorknop', 'battery') }}"
+    radiatorknop_temperature:
+      friendly_name: "Huidige temperatuur"
+      entity_id: sensor.radiatorknop
+      unit_of_measurement: '°C'
+      device_class: 'temperature'
+      value_template: "{{ state_attr('sensor.radiatorknop', 'local_temperature') }}"
+    radiatorknop_temperature_setpoint:
+      friendly_name: "Doel temperatuur"
+      entity_id: sensor.radiatorknop
+      unit_of_measurement: '°C'
+      device_class: 'temperature'
+      value_template: "{{ state_attr('sensor.radiatorknop', 'current_heating_setpoint') }}"
+    radiatorknop_heatingdemand:
+      friendly_name: "Warmtevraag"
+      entity_id: sensor.radiatorknop
+      value_template: "{{ state_attr('sensor.radiatorknop', 'pi_heating_demand') }}"

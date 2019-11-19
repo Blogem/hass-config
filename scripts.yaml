@@ -196,12 +196,12 @@ radiator_woonkamer_on:
   - service: mqtt.publish
     data_template:
       topic: zigbee2mqtt/0x00158d000192371a/set
-      payload: "{\"current_heating_setpoint\": 20.5}"
+      payload: "{\"current_heating_setpoint\": 20}"
     
 radiator_woonkamer_off:
   sequence:
   - service: mqtt.publish
     data_template:
       topic: zigbee2mqtt/0x00158d000192371a/set
-      payload: "{\"current_heating_setpoint\": 5}"
+      payload: "{\"current_heating_setpoint\": 0}"
   
