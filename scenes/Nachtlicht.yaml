@@ -12,3 +12,5 @@ entities:
     state: off
   switch.woonkamer_plafond:
     state: off
+  light.bureau:
+    state: off

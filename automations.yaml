@@ -10,8 +10,7 @@
   - data:
       entity_id: input_boolean.radiator_woonkamer
     service: input_boolean.turn_off
-  - alias: ''
-    data:
+  - data:
       entity_id: group.all_lights
     service: light.turn_off
   - data:
@@ -408,28 +407,42 @@
   - service: switch.turn_on
     entity_id: switch.onkyo
 
-- id: onkyo_stop_playing_delay_timer
-  alias: Start timer voor dat Onkyo definitief uit gaat
+#- id: onkyo_stop_playing_delay_timer
+#  alias: Start timer voor dat Onkyo definitief uit gaat
+#  trigger:
+#    platform: state
+#    entity_id: media_player.chromebitch
+#    to: 'off'
+#  action:
+#    service: timer.start
+#    entity_id: timer.onkyo
+
+#- id: onkyo_stop_playing
+#  alias: Zet onkyo uit als Chromebitch uit gaat
+#  trigger:
+#    platform: event
+#    event_type: timer.finished
+#    event_data:
+#      entity_id: timer.onkyo
+#  condition:
+#  - condition: state
+#    state: 'off'
+#    entity_id: media_player.chromebitch
+#  action:
+#  - service: switch.turn_off
+#    entity_id: switch.onkyo
+
+- id: onkyo_stop_playing
+  alias: Zet onkyo uit als Chromebitch uit gaat
   trigger:
     platform: state
     entity_id: media_player.chromebitch
     to: 'off'
   action:
-    service: timer.start
-    entity_id: timer.onkyo
-
-- id: onkyo_stop_playing
-  alias: Zet onkyo uit als Chromebitch uit gaat
-  trigger:
-    platform: event
-    event_type: timer.finished
-    event_data:
-      entity_id: timer.onkyo
-  condition:
+  - delay: 00:00:17
   - condition: state
     state: 'off'
     entity_id: media_player.chromebitch
-  action:
   - service: switch.turn_off
     entity_id: switch.onkyo
 

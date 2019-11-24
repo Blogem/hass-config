@@ -20,9 +20,9 @@ concertzender:
 spotify2chromecast:
   alias: "Speel spotify op Chromecast af"
   sequence:
-    - condition: state
-      entity_id: media_player.spotify
-      state: playing
+    - wait_template: "{{ is_state('media_player.spotify', 'playing') }}"
+      timeout: '00:00:45'
+      continue_on_timeout: 'false'
     - service: media_player.turn_on
       entity_id: media_player.chromebitch
     - service: switch.turn_on
@@ -32,8 +32,7 @@ spotify2chromecast:
     - service: spotcast.start
       data:
         entity_id: media_player.chromebitch
-        
-        
+              
 # Zigbee2mqtt - Scripts for renaming & removing devices
 zigbee2mqtt_rename:
   alias: Zigbee2mqtt Rename
@@ -189,8 +188,7 @@ scene_relax:
         brightness_pct: 11
         r: 255
         g: 96
-        b: 0
-        
+        b: 0   
 scene_nachtlicht:
   sequence:
     - service: script.turn_on_ikea_light_rgb_color
