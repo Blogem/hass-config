@@ -78,3 +78,35 @@ hi_laptop_jln1:
   name: HI-LAPTOP-JLN1
   picture:
   track: false
+
+pocophone:
+  hide_if_away: false
+  icon:
+  mac: BT_A4:50:46:0F:50:4C
+  name: POCOPHONE
+  picture:
+  track: false
+
+galaxy_a8_2018:
+  hide_if_away: false
+  icon:
+  mac: BT_A4:6C:F1:27:FC:61
+  name: Galaxy A8 (2018)
+  picture:
+  track: false
+
+eneby20:
+  hide_if_away: false
+  icon:
+  mac: BT_FC:58:FA:C1:8E:13
+  name: ENEBY20
+  picture:
+  track: false
+
+galaxy_s9:
+  hide_if_away: false
+  icon:
+  mac: BT_74:EB:80:E7:68:FF
+  name: Galaxy S9
+  picture:
+  track: false

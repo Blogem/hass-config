@@ -7,9 +7,7 @@
     to: not_home
   condition: []
   action:
-  - data:
-      entity_id: input_boolean.radiator_woonkamer
-    service: input_boolean.turn_off
+  - service: script.radiator_woonkamer_off
   - data:
       entity_id: group.all_lights
     service: light.turn_off
@@ -38,9 +36,7 @@
       entity_id: scene.avond
     service: scene.turn_on
   - service: script.spotify2chromecast
-  - service: input_boolean.turn_on
-    data:
-      entity_id: input_boolean.radiator_woonkamer
+  - service: script.radiator_woonkamer_on
   id: e53a8b9a452d4a5f9f8cc2fbbd948681
 
 - id: '1566071067769'
@@ -85,9 +81,7 @@
   - data:
       entity_id: switch.onkyo
     service: switch.turn_off
-  - service: input_boolean.turn_off
-    data:
-      entity_id: input_boolean.radiator_woonkamer
+  - service: script.radiator_woonkamer_off
 
 - id: '1568405264320'
   alias: Tasker Keuken Werk toggle
@@ -185,6 +179,14 @@
   - data:
       entity_id: scene.Nachtlicht
     service: scene.turn_on
+    
+- id: 'tasker_radiatoruit'
+  alias: Tasker Radiator uit
+  trigger:
+  - platform: webhook
+    webhook_id: !secret webhook_tasker_radiatoruit
+  action:
+  - service: script.radiator_woonkamer_off
       
 - id: '1566142801325'
   alias: Home (dag)
@@ -202,9 +204,7 @@
       entity_id: scene.overdag
     service: scene.turn_on
   - service: script.spotify2chromecast
-  - service: input_boolean.turn_on
-    data:
-      entity_id: input_boolean.radiator_woonkamer
+  - service: script.radiator_woonkamer_on
 
 - alias: Wake-up light
   trigger:
@@ -231,7 +231,6 @@
       - thu
       - fri
   action:
-  - service: script.radiator_woonkamer_on
   - service: light.turn_on
     entity_id: group.wakeup_lights
     data:
@@ -305,37 +304,10 @@
     - condition: state
       entity_id: light.keuken_werk
       state: 'on'
-    - condition: or
-      conditions:
-      - condition: state
-        entity_id: light.av_meubel
-        state: 'off'
-      - condition: state
-        entity_id: switch.av_tafellamp
-        state: 'off'
-  action:
-  - service: switch.turn_on
-    entity_id: switch.woonkamer_plafond
-
-- id: Plafondlamp_bij_donker_occupancy
-  alias: Plafondlamp aan als het donker is (occ)
-  trigger:
-    platform: state
-    entity_id: binary_sensor.bewegingsmelder_occupancy
-    from: 'off'
-    to: 'on'
-  condition:
-    condition: and
-    conditions:
-    - condition: state
-      entity_id: light.keuken_werk
-      state: 'on'
     - condition: state
       entity_id: switch.woonkamer_plafond
       state: 'off'
-    - condition: numeric_state
-      entity_id: sensor.bewegingsmelder_illuminance
-      below: 60
+      for: '00:15:00'
     - condition: or
       conditions:
       - condition: state
@@ -348,8 +320,40 @@
   - service: switch.turn_on
     entity_id: switch.woonkamer_plafond
 
-- id: Plafondlamp_bij_donker_occupancy
-  alias: Plafondlamp aan als keukenwerk aan gaat en het donker is en er al beweging was
+#- id: Plafondlamp_bij_donker_occupancy
+#  alias: Plafondlamp aan als het donker is (occ)
+#  trigger:
+#    platform: state
+#    entity_id: binary_sensor.bewegingsmelder_occupancy
+#    from: 'off'
+#    to: 'on'
+#  condition:
+#    condition: and
+#    conditions:
+#    - condition: state
+#      entity_id: light.keuken_werk
+#      state: 'on'
+#    - condition: state
+#      entity_id: switch.woonkamer_plafond
+#      state: 'off'
+#      for: '00:15:00'
+#    - condition: numeric_state
+#      entity_id: sensor.bewegingsmelder_illuminance
+#      below: 60
+#    - condition: or
+#      conditions:
+#      - condition: state
+#        entity_id: light.av_meubel
+#        state: 'off'
+#      - condition: state
+#        entity_id: switch.av_tafellamp
+#        state: 'off'
+#  action:
+#  - service: switch.turn_on
+#    entity_id: switch.woonkamer_plafond
+#
+- id: Plafondlamp_bij_donker_keukenwerk
+  alias: Plafondlamp aan als keukenwerk aan gaat en het donker is
   trigger:
     platform: state
     entity_id: light.keuken_werk
@@ -358,12 +362,6 @@
   condition:
     condition: and
     conditions:
-    - condition: state
-      entity_id: binary_sensor.bewegingsmelder_occupancy
-      state: 'on'
-    - condition: state
-      entity_id: switch.woonkamer_plafond
-      state: 'off'
     - condition: numeric_state
       entity_id: sensor.bewegingsmelder_illuminance
       below: 60
@@ -389,6 +387,7 @@
   - condition: state
     entity_id: switch.woonkamer_plafond
     state: 'on'
+    for: '00:15:00'
   action:
   - service: switch.turn_off
     entity_id: switch.woonkamer_plafond
@@ -455,7 +454,7 @@
   action:
   - service: script.radiator_woonkamer_on
   
-- id: radiator_woonkamer_on
+- id: radiator_woonkamer_off
   alias: Switch Radiator in Woonkamer off
   trigger:
     platform: state
@@ -464,17 +463,65 @@
   action:
   - service: script.radiator_woonkamer_off
 
+- id: radiator_woonkamer_max_on
+  alias: Switch Radiator in Woonkamer Max on
+  trigger:
+    platform: state
+    entity_id: input_boolean.radiator_woonkamer_max
+    to: 'on'
+  action:
+  - service: script.radiator_woonkamer_max_on
+
 - id: spotifylaptop2chromebitch
   alias: Speel muziek van laptop op Chromcast
   trigger:
     platform: state
     entity_id: media_player.spotify
     to: playing
+#  condition:
+#  - condition: state
+#    entity_id: person.jochem
+#    state: home
+#  - condition: template
+#    value_template: "{{ is_state_attr('media_player.spotify', 'source', 'HI-LAPTOP-JLN1') }}" 
   condition:
+    condition: and
+    conditions:
+    - condition: state
+      entity_id: person.jochem
+      state: home
+    - condition: or
+      conditions:
+      - condition: template
+        value_template: "{{ is_state_attr('media_player.spotify', 'source', 'HI-LAPTOP-JLN1') }}" 
+      - condition: template
+        value_template: "{{ is_state_attr('media_player.spotify', 'source', 'DESKTOP-56IBQA7') }}" 
+  action:
+  - service: script.spotify2chromecast
+  
+- id: to_tasker_radiatoruit
+  alias: Stuur bericht radiatoruit naar tasker
+  trigger:
+    platform: time
+    at: '21:45:00'
+  condition:
+  - condition: state
+    entity_id: input_boolean.radiator_woonkamer
+    state: 'on'
+  action:
+  - service: script.to_tasker_radiatoruit
+  
+- id: radiator_aan_als_thuis
+  alias: Zet radiator aan als ik om 9:05 nog thuis ben
+  trigger:
+    platform: time
+    at: '09:05:00'
+  condition:
+  - condition: state
+    entity_id: input_boolean.radiator_woonkamer
+    state: 'off'
   - condition: state
     entity_id: person.jochem
     state: home
-  - condition: template
-    value_template: "{{ is_state_attr('media_player.spotify', 'source', 'HI-LAPTOP-JLN1') }}" 
   action:
-  - service: script.spotify2chromecast
+  - service: script.radiator_woonkamer_on

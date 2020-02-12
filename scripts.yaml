@@ -16,6 +16,32 @@ concertzender:
         media_content_id: http://streams.greenhost.nl:8080/live
         media_content_type: 'audio/mp4'
         
+spotifyambientmusiclistige:
+  alias: "Spotify AmbientMusic Listige"
+  sequence:
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.chromebitch
+        volume_level: 0.01
+    - service: spotcast.start
+      data:
+        entity_id: media_player.chromebitch
+        uri: 'spotify:playlist:7waqyBKVJo9789gEGYW1gz'
+        random_song: 'true'
+    - delay: '00:00:01'
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.spotify
+        volume_level: 0.01
+    - delay: '00:00:01'
+    - service: python_script.volume_transition
+      data:
+        entity_id: media_player.spotify
+        transition_duration: 60
+        sleep_delay: 3
+        start_level: 0.01
+        end_level: 0.5
+
 # speel spotify op Chromecast af
 spotify2chromecast:
   alias: "Speel spotify op Chromecast af"
@@ -204,12 +230,48 @@ radiator_woonkamer_on:
   - service: mqtt.publish
     data_template:
       topic: zigbee2mqtt/0x00158d000192371a/set
-      payload: "{\"current_heating_setpoint\": 20}"
+      payload: "{\"current_heating_setpoint\": 21}"
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.radiator_woonkamer
     
 radiator_woonkamer_off:
   sequence:
+  - condition: numeric_state
+    entity_id: sensor.radiatorknop_temperature_setpoint
+    above: 0 
+  - service: mqtt.publish
+    data_template:
+      topic: zigbee2mqtt/0x00158d000192371a/set
+      payload: "{\"current_heating_setpoint\": 30}"
+  - delay: '00:00:03'
+  - wait_template: "{{ state_attr('sensor.radiatorknop', 'pi_heating_demand')|int > 100 }}"
+    timeout: '00:00:12'
+    continue_on_timeout: 'true'
   - service: mqtt.publish
     data_template:
       topic: zigbee2mqtt/0x00158d000192371a/set
       payload: "{\"current_heating_setpoint\": 0}"
-  
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.radiator_woonkamer
+  - service: input_boolean.turn_off
+    data:
+      entity_id: input_boolean.radiator_woonkamer_max
+      
+to_tasker_radiatoruit:
+  sequence:
+  - service: shell_command.get_url
+    data: 
+      url: !secret to_tasker_radiatoruit
+
+radiator_woonkamer_max_on:
+  sequence:
+  - service: input_boolean.turn_on
+    data:
+      entity_id: input_boolean.radiator_woonkamer
+  - delay: '00:00:05'
+  - service: mqtt.publish
+    data_template:
+      topic: zigbee2mqtt/0x00158d000192371a/set
+      payload: "{\"current_heating_setpoint\": 30}"

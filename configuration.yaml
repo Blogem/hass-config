@@ -64,6 +64,9 @@ hacs:
   appdaemon: True
   python_script: True
   theme: True
+
+shell_command:
+  get_url: curl -X GET '{{ url }}'
     
 # ZIGBEE2MQTT    
 # Input select for Zigbee2mqtt debug level
