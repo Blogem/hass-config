@@ -32,9 +32,7 @@
     state: below_horizon
     entity_id: sun.sun
   action:
-  - data:
-      entity_id: scene.avond
-    service: scene.turn_on
+  - service: script.scene_avond
   - service: script.spotify2chromecast
   - service: script.radiator_woonkamer_on
   id: e53a8b9a452d4a5f9f8cc2fbbd948681
@@ -50,9 +48,7 @@
     entity_id: person.jochem
     state: home
   action:
-  - data:
-      entity_id: scene.avond
-    service: scene.turn_on
+  - service: script.scene_avond
 
 - alias: Webhook Call Service
   initial_state: 'on'
@@ -72,9 +68,7 @@
     webhook_id: !secret webhook_tasker_uit
   condition: []
   action:
-  - data:
-      entity_id: scene.uit
-    service: scene.turn_on
+  - service: script.scene_uit
   - data:
       entity_id: media_player.chromebitch
     service: media_player.turn_off
@@ -122,9 +116,7 @@
   - platform: webhook
     webhook_id: !secret webhook_tasker_sceneoverdag
   action:
-  - data:
-      entity_id: scene.Overdag
-    service: scene.turn_on
+  - service: script.scene_overdag
 
 - id: 'tasker_sceneavond'
   alias: Tasker Scene Avond
@@ -132,9 +124,7 @@
   - platform: webhook
     webhook_id: !secret webhook_tasker_sceneavond
   action:
-  - data:
-      entity_id: scene.Avond
-    service: scene.turn_on
+  - service: script.scene_avond
 
 - id: 'tasker_sceneavond2'
   alias: Tasker Scene Avond2
@@ -142,9 +132,7 @@
   - platform: webhook
     webhook_id: !secret webhook_tasker_sceneavond2
   action:
-  - data:
-      entity_id: scene.Avond2
-    service: scene.turn_on
+  - service: script.scene_avond2
     
 - id: 'tasker_scenerelax'
   alias: Tasker Scene Relax
@@ -152,9 +140,7 @@
   - platform: webhook
     webhook_id: !secret webhook_tasker_scenerelax
   action:
-  - data:
-      entity_id: scene.Relax
-    service: scene.turn_on
+  - service: script.scene_relax
 
 - id: 'tasker_scenenachtlicht'
   alias: Tasker Scene Nachtlicht
@@ -162,9 +148,7 @@
   - platform: webhook
     webhook_id: !secret webhook_tasker_scenenachtlicht
   action:
-  - data:
-      entity_id: scene.Nachtlicht
-    service: scene.turn_on
+  - service: script.scene_nachtlicht
 
 - id: 'tasker_nachtlicht'
   alias: Tasker Nachtlicht
@@ -176,9 +160,7 @@
     state: 'off'
     entity_id: group.all_lights
   action:
-  - data:
-      entity_id: scene.Nachtlicht
-    service: scene.turn_on
+  - service: script.scene_nachtlicht
     
 - id: 'tasker_radiatoruit'
   alias: Tasker Radiator uit
@@ -200,9 +182,7 @@
     state: above_horizon
     entity_id: sun.sun
   action:
-  - data:
-      entity_id: scene.overdag
-    service: scene.turn_on
+  - service: script.scene_overdag
   - service: script.spotify2chromecast
   - service: script.radiator_woonkamer_on
 
@@ -265,7 +245,7 @@
 
 - id: zigbee_join_enabled
   alias: Zigbee Join Enabled
-  hide_entity: true
+  #hide_entity: true
   trigger:
     platform: state
     entity_id: switch.zigbee2mqtt_main_join
@@ -276,7 +256,7 @@
 
 - id: zigbee_join_disabled
   alias: Zigbee Join Disabled
-  hide_entity: true
+  #hide_entity: true
   trigger:
   - platform: event
     event_type: timer.finished
@@ -476,14 +456,14 @@
   alias: Speel muziek van laptop op Chromcast
   trigger:
     platform: state
-    entity_id: media_player.spotify
+    entity_id: media_player.spotify_jochem_van_leeuwen
     to: playing
 #  condition:
 #  - condition: state
 #    entity_id: person.jochem
 #    state: home
 #  - condition: template
-#    value_template: "{{ is_state_attr('media_player.spotify', 'source', 'HI-LAPTOP-JLN1') }}" 
+#    value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'HI-LAPTOP-JLN1') }}" 
   condition:
     condition: and
     conditions:
@@ -493,9 +473,9 @@
     - condition: or
       conditions:
       - condition: template
-        value_template: "{{ is_state_attr('media_player.spotify', 'source', 'HI-LAPTOP-JLN1') }}" 
+        value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'HI-LAPTOP-JLN1') }}" 
       - condition: template
-        value_template: "{{ is_state_attr('media_player.spotify', 'source', 'DESKTOP-56IBQA7') }}" 
+        value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'DESKTOP-56IBQA7') }}" 
   action:
   - service: script.spotify2chromecast
   

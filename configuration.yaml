@@ -10,7 +10,7 @@ logger:
 # http:
 #   base_url: example.duckdns.org:8123
 http:
-  base_url: hass.troep.net
+  base_url: https://hass.troep.net
   use_x_forwarded_for: true
   trusted_proxies: 185.107.213.176
   
@@ -43,20 +43,17 @@ mqtt:
     topic: 'hass/status'
     payload: 'offline'
 
-hdmi_cec:
-  devices:
-    5: Onkyo
+#hdmi_cec:
+#  devices:
+#    5: Onkyo
 
 spotcast:
   username: !secret spotify_username
   password: !secret spotify_password
     
-media_player:
-  - platform: spotify
-    client_id: !secret spotify_api_client_id
-    client_secret: !secret spotify_api_client_secret
-    aliases:
-      edf51c6b051b3058b4d1ef524ec1b94e: Chromebitch
+spotify:
+  client_id: !secret spotify_api_client_id
+  client_secret: !secret spotify_api_client_secret
 
 hacs:
   token: !secret hacs_token

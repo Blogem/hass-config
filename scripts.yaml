@@ -31,12 +31,12 @@ spotifyambientmusiclistige:
     - delay: '00:00:01'
     - service: media_player.volume_set
       data:
-        entity_id: media_player.spotify
+        entity_id: media_player.spotify_jochem_van_leeuwen
         volume_level: 0.01
     - delay: '00:00:01'
     - service: python_script.volume_transition
       data:
-        entity_id: media_player.spotify
+        entity_id: media_player.spotify_jochem_van_leeuwen
         transition_duration: 60
         sleep_delay: 3
         start_level: 0.01
@@ -46,7 +46,7 @@ spotifyambientmusiclistige:
 spotify2chromecast:
   alias: "Speel spotify op Chromecast af"
   sequence:
-    - wait_template: "{{ is_state('media_player.spotify', 'playing') }}"
+    - wait_template: "{{ is_state('media_player.spotify_jochem_van_leeuwen', 'playing') }}"
       timeout: '00:00:45'
       continue_on_timeout: 'false'
     - service: media_player.turn_on
@@ -157,6 +157,19 @@ scene_overdag:
         entity_id: light.keuken_werk
         brightness_pct: 94
         color_temp: 263
+    - service: switch.turn_off
+      entity_id: switch.keuken_sfeer
+    - service: switch.turn_off
+      entity_id: switch.av_tafellamp
+    - service: light.turn_off
+      data_template:
+        entity_id: light.bureau
+    - service: light.turn_off
+      data_template:
+        entity_id: light.av_meubel
+    - service: light.turn_off
+      data_template:
+        entity_id: light.livingcolors
 scene_avond:
   sequence:
     - service: script.turn_on_ikea_light_color_temp
@@ -178,13 +191,26 @@ scene_avond:
         r: 255
         g: 149
         b: 50
+    - service: light.turn_on
+      data_template:
+        entity_id: light.livingcolors
+        transition: 5
+        brightness: 97
+        xy_color: [0.492, 0.474]
+    - service: switch.turn_off
+      entity_id: switch.keuken_sfeer
+    - service: switch.turn_on
+      entity_id: switch.woonkamer_plafond
+    - service: switch.turn_off
+      entity_id: switch.av_tafellamp
+      
 scene_avond2:
   sequence:
     - service: script.turn_on_ikea_light_color_temp
       data_template:
         entity_id: light.keuken_werk
-        brightness_pct: 50
-        color_temp: 427
+        brightness_pct: 5
+        color_temp: 454
     - service: script.turn_on_ikea_light_rgb_color
       data_template:
         entity_id: light.av_meubel
@@ -199,6 +225,18 @@ scene_avond2:
         r: 255
         g: 149
         b: 50
+    - service: light.turn_on
+      data_template:
+        entity_id: light.livingcolors
+        brightness: 131
+        transition: 5
+        xy_color: [0.508, 0.451]
+    - service: switch.turn_off
+      entity_id: switch.keuken_sfeer
+    - service: switch.turn_off
+      entity_id: switch.woonkamer_plafond
+    - service: switch.turn_on
+      entity_id: switch.av_tafellamp
 scene_relax:
   sequence:
     - service: script.turn_on_ikea_light_rgb_color
@@ -215,6 +253,21 @@ scene_relax:
         r: 255
         g: 96
         b: 0   
+    - service: switch.turn_on
+      entity_id: switch.keuken_sfeer
+    - service: switch.turn_off
+      entity_id: switch.woonkamer_plafond
+    - service: switch.turn_on
+      entity_id: switch.av_tafellamp
+    - service: light.turn_off
+      data_template:
+        entity_id: light.keuken_werk
+    - service: light.turn_on
+      data_template:
+        entity_id: light.livingcolors
+        brightness: 35
+        transition: 5
+        xy_color: [0.582, 0.395]
 scene_nachtlicht:
   sequence:
     - service: script.turn_on_ikea_light_rgb_color
@@ -224,7 +277,41 @@ scene_nachtlicht:
         r: 255
         g: 96
         b: 0
-
+    - service: switch.turn_off
+      entity_id: switch.keuken_sfeer
+    - service: switch.turn_off
+      entity_id: switch.woonkamer_plafond
+    - service: switch.turn_off
+      entity_id: switch.av_tafellamp
+    - service: light.turn_off
+      data_template:
+        entity_id: light.keuken_werk
+    - service: light.turn_off
+      data_template:
+        entity_id: light.livingcolors
+    - service: light.turn_off
+      data_template:
+        entity_id: light.bureau
+scene_uit:
+  sequence:
+    - service: light.turn_off
+      data_template:
+        entity_id: light.av_meubel
+    - service: switch.turn_off
+      entity_id: switch.keuken_sfeer
+    - service: switch.turn_off
+      entity_id: switch.woonkamer_plafond
+    - service: switch.turn_off
+      entity_id: switch.av_tafellamp
+    - service: light.turn_off
+      data_template:
+        entity_id: light.keuken_werk
+    - service: light.turn_off
+      data_template:
+        entity_id: light.livingcolors
+    - service: light.turn_off
+      data_template:
+        entity_id: light.bureau
 radiator_woonkamer_on:
   sequence:
   - service: mqtt.publish
