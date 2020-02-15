@@ -53,3 +53,17 @@
       friendly_name: "Warmtevraag"
       entity_id: sensor.radiatorknop
       value_template: "{{ state_attr('sensor.radiatorknop', 'pi_heating_demand') }}"
+    voordeur_battery:
+      friendly_name: "Voordeur battery"
+      entity_id: binary_sensor.voordeur_contact
+      unit_of_measurement: '%'
+      device_class: 'battery'
+      value_template: "{{ state_attr('binary_sensor.voordeur_contact','battery') }}"
+    voordeur_linkquality:
+      friendly_name: "Voordeur linkquality"
+      entity_id: binary_sensor.voordeur_contact
+      value_template: "{{ state_attr('binary_sensor.voordeur_contact','linkquality') }}"
+    voordeur:
+      friendly_name: "Voordeur"
+      entity_id: binary_sensor.voordeur_contact
+      value_template: "{{ state_attr('binary_sensor.voordeur_contact','contact') }}"      

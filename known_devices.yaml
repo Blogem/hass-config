@@ -110,3 +110,19 @@ galaxy_s9:
   name: Galaxy S9
   picture:
   track: false
+
+phl_43pus6412_12:
+  hide_if_away: false
+  icon:
+  mac: BT_3C:95:09:EB:BB:FC
+  name: PHL-43PUS6412/12
+  picture:
+  track: false
+
+galaxy_a5_2017:
+  hide_if_away: false
+  icon:
+  mac: BT_9C:E0:63:07:BF:F7
+  name: Galaxy A5 (2017)
+  picture:
+  track: false

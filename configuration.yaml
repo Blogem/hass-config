@@ -94,7 +94,7 @@ timer:
     duration: 120
 # /ZIGBEE2MQTT    
 
-#timer voor onkyo schakelen
-  onkyo:
-    name: Onkyo power delay
-    duration: '00:00:17'
+#timer voor deurnotificatie
+  voordeur:
+    name: Voordeur delay
+    duration: '00:00:45'

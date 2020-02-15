@@ -8,18 +8,32 @@
   condition: []
   action:
   - service: script.radiator_woonkamer_off
-  - data:
-      entity_id: group.all_lights
-    service: light.turn_off
+  - service: script.scene_uit
   - data:
       entity_id: media_player.chromebitch
     service: media_player.turn_off
   - data:
       entity_id: switch.onkyo
     service: switch.turn_off
-  - data:
-      entity_id: group.all_switches
-    service: switch.turn_off
+
+- id: '1566142801325'
+  alias: Home (dag)
+  trigger:
+  - entity_id: person.jochem
+    from: not_home
+    platform: state
+    to: home
+  condition:
+  - condition: state
+    state: above_horizon
+    entity_id: sun.sun
+  action:
+  - service: timer.cancel
+    data:
+      entity_id: timer.voordeur
+  - service: script.scene_overdag
+  - service: script.spotify2chromecast
+  - service: script.radiator_woonkamer_on
 
 - alias: Home (avond)
   trigger:
@@ -32,6 +46,9 @@
     state: below_horizon
     entity_id: sun.sun
   action:
+  - service: timer.cancel
+    data:
+      entity_id: timer.voordeur
   - service: script.scene_avond
   - service: script.spotify2chromecast
   - service: script.radiator_woonkamer_on
@@ -170,22 +187,6 @@
   action:
   - service: script.radiator_woonkamer_off
       
-- id: '1566142801325'
-  alias: Home (dag)
-  trigger:
-  - entity_id: person.jochem
-    from: not_home
-    platform: state
-    to: home
-  condition:
-  - condition: state
-    state: above_horizon
-    entity_id: sun.sun
-  action:
-  - service: script.scene_overdag
-  - service: script.spotify2chromecast
-  - service: script.radiator_woonkamer_on
-
 - alias: Wake-up light
   trigger:
     platform: template
@@ -505,3 +506,59 @@
     state: home
   action:
   - service: script.radiator_woonkamer_on
+  
+- id: lichten_aan_als_deur_open
+  alias: Zet de lichten aan als de deur open gaat
+  trigger:
+    platform: state
+    entity_id: sensor.voordeur
+    from: 'True'
+    to: 'False'
+  condition:
+  - condition: state
+    entity_id: person.jochem
+    state: not_home
+  - condition: state
+    state: above_horizon
+    entity_id: sun.sun
+  action:
+  - service: timer.start
+    data:
+      entity_id: timer.voordeur
+  - service: script.scene_overdag
+  
+- id: lichten_aan_als_deur_open_avond
+  alias: Zet de lichten aan als de deur open gaat (avond)
+  trigger:
+    platform: state
+    entity_id: sensor.voordeur
+    from: 'True'
+    to: 'False'
+  condition:
+  - condition: state
+    entity_id: person.jochem
+    state: not_home
+  - condition: state
+    state: below_horizon
+    entity_id: sun.sun
+  action:
+  - service: timer.start
+    data:
+      entity_id: timer.voordeur
+  - service: script.scene_avond
+  
+- id: deurnotificatie
+  alias: Stuur notificatie als er niet op tijd iemand thuis komt
+  trigger:
+    platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.voordeur
+  condition:
+  - condition: state
+    entity_id: person.jochem
+    state: not_home
+  action:
+  - service: shell_command.get_url
+    data: 
+      url: !secret to_tasker_deurnotificatie
