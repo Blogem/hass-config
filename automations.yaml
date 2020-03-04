@@ -172,10 +172,14 @@
   trigger:
   - platform: webhook
     webhook_id: !secret webhook_tasker_nachtlicht
+#  condition:
+#  - condition: state
+#    state: 'off'
+#    entity_id: group.all_lights
   condition:
-  - condition: state
-    state: 'off'
-    entity_id: group.all_lights
+  - condition: template
+    value_template: >
+      {{ states.light | count == states.light | selectattr('state','eq','off') | list | count }}
   action:
   - service: script.scene_nachtlicht
     

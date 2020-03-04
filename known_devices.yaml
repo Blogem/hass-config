@@ -126,3 +126,11 @@ galaxy_a5_2017:
   name: Galaxy A5 (2017)
   picture:
   track: false
+
+macbook_pro_van_ashna:
+  hide_if_away: false
+  icon:
+  mac: BT_8C:85:90:BC:16:74
+  name: MacBook Pro van Ashna
+  picture:
+  track: false
