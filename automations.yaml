@@ -9,12 +9,17 @@
   action:
   - service: script.radiator_woonkamer_off
   - service: script.scene_uit
+  - service: script.spotify_op_pi_uit
   - data:
       entity_id: media_player.chromebitch
     service: media_player.turn_off
   - data:
       entity_id: switch.onkyo
     service: switch.turn_off
+  - data:
+      entity_id: input_boolean.onkyo_lock
+    service: input_boolean.turn_off
+  - service: script.spotify_op_pi_uit
 
 - id: '1566142801325'
   alias: Home (dag)
@@ -32,7 +37,8 @@
     data:
       entity_id: timer.voordeur
   - service: script.scene_overdag
-  - service: script.spotify2chromecast
+  #- service: script.spotify2chromecast
+  - service: script.spotify2pi
   - service: script.radiator_woonkamer_on
 
 - alias: Home (avond)
@@ -50,7 +56,8 @@
     data:
       entity_id: timer.voordeur
   - service: script.scene_avond
-  - service: script.spotify2chromecast
+  #- service: script.spotify2chromecast
+  - service: script.spotify2pi
   - service: script.radiator_woonkamer_on
   id: e53a8b9a452d4a5f9f8cc2fbbd948681
 
@@ -85,14 +92,18 @@
     webhook_id: !secret webhook_tasker_uit
   condition: []
   action:
+  - service: script.radiator_woonkamer_off
   - service: script.scene_uit
+  - service: script.spotify_op_pi_uit
   - data:
       entity_id: media_player.chromebitch
     service: media_player.turn_off
   - data:
       entity_id: switch.onkyo
     service: switch.turn_off
-  - service: script.radiator_woonkamer_off
+  - data:
+      entity_id: input_boolean.onkyo_lock
+    service: input_boolean.turn_off
 
 - id: '1568405264320'
   alias: Tasker Keuken Werk toggle
@@ -150,7 +161,7 @@
     webhook_id: !secret webhook_tasker_sceneavond2
   action:
   - service: script.scene_avond2
-    
+
 - id: 'tasker_scenerelax'
   alias: Tasker Scene Relax
   trigger:
@@ -182,7 +193,7 @@
       {{ states.light | count == states.light | selectattr('state','eq','off') | list | count }}
   action:
   - service: script.scene_nachtlicht
-    
+
 - id: 'tasker_radiatoruit'
   alias: Tasker Radiator uit
   trigger:
@@ -190,7 +201,7 @@
     webhook_id: !secret webhook_tasker_radiatoruit
   action:
   - service: script.radiator_woonkamer_off
-      
+
 - alias: Wake-up light
   trigger:
     platform: template
@@ -391,6 +402,41 @@
   - service: switch.turn_on
     entity_id: switch.onkyo
 
+- id: onkyo_start_playing_optic
+  alias: Zet onkyo aan als Spotify op pi afspeelt
+  trigger:
+    platform: state
+    entity_id: media_player.spotify_jochem_van_leeuwen
+    to: 'playing'
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      state: 'off'
+      entity_id: switch.onkyo
+    - condition: template
+      value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'pi') }}"
+  action:
+  - service: switch.turn_on
+    entity_id: switch.onkyo
+
+- id: onkyo_start_playing_optic2
+  alias: Zet onkyo aan als Spotify op pi afspeelt (trigger = source)
+  trigger:
+    platform: template
+    value_template: "{% if is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'pi') %}true{% endif %}"
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      state: 'off'
+      entity_id: switch.onkyo
+    - condition: template
+      value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'pi') }}"
+  action:
+  - service: switch.turn_on
+    entity_id: switch.onkyo
+
 #- id: onkyo_stop_playing_delay_timer
 #  alias: Start timer voor dat Onkyo definitief uit gaat
 #  trigger:
@@ -426,9 +472,67 @@
   - delay: 00:00:17
   - condition: state
     state: 'off'
+    entity_id: input_boolean.onkyo_lock
+  - condition: state
+    state: 'off'
     entity_id: media_player.chromebitch
   - service: switch.turn_off
     entity_id: switch.onkyo
+
+- id: onkyo_stop_playing_optic
+  alias: Zet onkyo uit als Spotify op pi uit gaat
+  trigger:
+    platform: state
+    entity_id: media_player.spotify_jochem_van_leeuwen
+    to: 'idle'
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      state: 'on'
+      entity_id: switch.onkyo
+    - condition: state
+      state: 'off'
+      entity_id: input_boolean.onkyo_lock
+  action:
+  - delay: 00:00:17
+  - condition: state
+    state: 'off'
+    entity_id: media_player.chromebitch
+  - service: switch.turn_off
+    entity_id: switch.onkyo
+
+- id: onkyo_stop_playing_optic2
+  alias: Zet onkyo uit als Spotify op pi uit gaat (trigger = andere source)
+  trigger:
+    platform: template
+    value_template: "{% if not is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'pi') %}true{% endif %}"
+  condition:
+    condition: and
+    conditions:
+    - condition: state
+      state: 'on'
+      entity_id: switch.onkyo
+    - condition: state
+      state: 'off'
+      entity_id: input_boolean.onkyo_lock
+  action:
+  - delay: 00:00:17
+  - condition: state
+    state: 'off'
+    entity_id: media_player.chromebitch
+  - service: switch.turn_off
+    entity_id: switch.onkyo
+
+- id: spotify_stop_als_onkyo_uit
+  alias: Zet Spotify uit als onkyo uit gaat
+  trigger:
+    platform: state
+    entity_id: switch.onkyo
+    to: 'off'
+  action:
+    service: script.spotify_op_pi_uit
+
 
 - id: radiator_woonkamer_on
   alias: Switch Radiator in Woonkamer on
@@ -438,7 +542,7 @@
     to: 'on'
   action:
   - service: script.radiator_woonkamer_on
-  
+
 - id: radiator_woonkamer_off
   alias: Switch Radiator in Woonkamer off
   trigger:
@@ -468,7 +572,7 @@
 #    entity_id: person.jochem
 #    state: home
 #  - condition: template
-#    value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'HI-LAPTOP-JLN1') }}" 
+#    value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'HI-LAPTOP-JLN1') }}"
   condition:
     condition: and
     conditions:
@@ -478,12 +582,12 @@
     - condition: or
       conditions:
       - condition: template
-        value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'HI-LAPTOP-JLN1') }}" 
+        value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'HI-LAPTOP-JLN1') }}"
       - condition: template
-        value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'DESKTOP-56IBQA7') }}" 
+        value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'DESKTOP-56IBQA7') }}"
   action:
   - service: script.spotify2chromecast
-  
+
 - id: to_tasker_radiatoruit
   alias: Stuur bericht radiatoruit naar tasker
   trigger:
@@ -495,7 +599,7 @@
     state: 'on'
   action:
   - service: script.to_tasker_radiatoruit
-  
+
 - id: radiator_aan_als_thuis
   alias: Zet radiator aan als ik om 9:05 nog thuis ben
   trigger:
@@ -510,14 +614,14 @@
     state: home
   action:
   - service: script.radiator_woonkamer_on
-  
+
 - id: lichten_aan_als_deur_open
   alias: Zet de lichten aan als de deur open gaat
   trigger:
     platform: state
-    entity_id: sensor.voordeur
-    from: 'True'
-    to: 'False'
+    entity_id: binary_sensor.voordeur
+    from: 'on'
+    to: 'off'
   condition:
   - condition: state
     entity_id: person.jochem
@@ -530,14 +634,14 @@
     data:
       entity_id: timer.voordeur
   - service: script.scene_overdag
-  
+
 - id: lichten_aan_als_deur_open_avond
   alias: Zet de lichten aan als de deur open gaat (avond)
   trigger:
     platform: state
-    entity_id: sensor.voordeur
-    from: 'True'
-    to: 'False'
+    entity_id: binary_sensor.voordeur
+    from: 'on'
+    to: 'off'
   condition:
   - condition: state
     entity_id: person.jochem
@@ -550,7 +654,7 @@
     data:
       entity_id: timer.voordeur
   - service: script.scene_avond
-  
+
 - id: deurnotificatie
   alias: Stuur notificatie als er niet op tijd iemand thuis komt
   trigger:
@@ -564,5 +668,19 @@
     state: not_home
   action:
   - service: shell_command.get_url
-    data: 
+    data:
       url: !secret to_tasker_deurnotificatie
+
+- id: onkyo_on_at_lock
+  alias: Switch Onkyo on when lock is turned on
+  trigger:
+    platform: state
+    entity_id: input_boolean.onkyo_lock
+    to: 'on'
+  condition:
+  - condition: state
+    state: 'off'
+    entity_id: switch.onkyo
+  action:
+  - service: switch.turn_on
+    entity_id: switch.onkyo

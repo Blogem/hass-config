@@ -15,7 +15,7 @@ concertzender:
         entity_id: media_player.chromebitch
         media_content_id: http://streams.greenhost.nl:8080/live
         media_content_type: 'audio/mp4'
-        
+
 spotifyambientmusiclistige:
   alias: "Spotify AmbientMusic Listige"
   sequence:
@@ -58,7 +58,22 @@ spotify2chromecast:
     - service: spotcast.start
       data:
         entity_id: media_player.chromebitch
-              
+
+# speel spotify op pi af
+spotify2pi:
+  alias: "Speel spotify op pi af"
+  sequence:
+    - wait_template: "{{ is_state('media_player.spotify_jochem_van_leeuwen', 'playing') }}"
+      timeout: '00:00:45'
+      continue_on_timeout: 'false'
+    - service: media_player.select_source
+      data:
+        entity_id: media_player.spotify_jochem_van_leeuwen
+        source: 'pi'
+    - service: switch.turn_on
+      data:
+        entity_id: switch.onkyo
+
 # Zigbee2mqtt - Scripts for renaming & removing devices
 zigbee2mqtt_rename:
   alias: Zigbee2mqtt Rename
@@ -78,7 +93,7 @@ zigbee2mqtt_remove:
     data_template:
       topic: zigbee2mqtt/bridge/config/remove
       payload_template: "{{ states.input_text.zigbee2mqtt_remove.state | string }}"
-        
+
 
 # for testing purposes
 flash_avmeubel:
@@ -89,7 +104,7 @@ flash_avmeubel:
     - delay: '00:00:01'
     - service: light.turn_off
       entity_id: light.av_meubel
-      
+
 # ikea lights workaround
 turn_on_ikea_light_color_temp:
   sequence:
@@ -203,7 +218,7 @@ scene_avond:
       entity_id: switch.woonkamer_plafond
     - service: switch.turn_off
       entity_id: switch.av_tafellamp
-      
+
 scene_avond2:
   sequence:
     - service: script.turn_on_ikea_light_color_temp
@@ -252,7 +267,7 @@ scene_relax:
         brightness_pct: 11
         r: 255
         g: 96
-        b: 0   
+        b: 0
     - service: switch.turn_on
       entity_id: switch.keuken_sfeer
     - service: switch.turn_off
@@ -321,12 +336,12 @@ radiator_woonkamer_on:
   - service: input_boolean.turn_on
     data:
       entity_id: input_boolean.radiator_woonkamer
-    
+
 radiator_woonkamer_off:
   sequence:
   - condition: numeric_state
     entity_id: sensor.radiatorknop_temperature_setpoint
-    above: 0 
+    above: 0
   - service: mqtt.publish
     data_template:
       topic: zigbee2mqtt/0x00158d000192371a/set
@@ -345,11 +360,11 @@ radiator_woonkamer_off:
   - service: input_boolean.turn_off
     data:
       entity_id: input_boolean.radiator_woonkamer_max
-      
+
 to_tasker_radiatoruit:
   sequence:
   - service: shell_command.get_url
-    data: 
+    data:
       url: !secret to_tasker_radiatoruit
 
 radiator_woonkamer_max_on:
@@ -362,3 +377,11 @@ radiator_woonkamer_max_on:
     data_template:
       topic: zigbee2mqtt/0x00158d000192371a/set
       payload: "{\"current_heating_setpoint\": 30}"
+
+spotify_op_pi_uit:
+  sequence:
+  - condition: template
+    value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'pi') }}"
+  - service: media_player.media_pause
+    data:
+      entity_id: media_player.spotify_jochem_van_leeuwen

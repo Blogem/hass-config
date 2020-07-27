@@ -13,3 +13,6 @@ radiator_woonkamer:
   
 radiator_woonkamer_max:
   name: "Radiator Woonkamer Max"
+  
+onkyo_lock:
+  name: "Onkyo lock"
