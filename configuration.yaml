@@ -86,6 +86,25 @@ input_text:
     name: Zigbee2mqtt New Name
   zigbee2mqtt_remove:
     name: Zigbee2mqtt Remove
+  # for round remote
+  current_active_light:
+    name: Current Active Light on remote
+
+input_number:
+  # counter for lights
+  cntr_lights:
+    name: Counter Lights
+    initial: 0
+    min: 0
+    max: 256
+    step: 1
+  # counter for scenes/scripts
+  cntr_scenes:
+    initial: 0
+    min: 0
+    max: 256
+    step: 1
+    name: Counter Scenes
 
 # Timer for joining time remaining (120 sec = 2 min)
 timer:

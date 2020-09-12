@@ -10,3 +10,23 @@ wakeup_lights:
   entities:
     - light.av_meubel
     - light.bureau
+
+# for round ikearemote
+lights_for_remote:
+  name: "Lights for round Ikea remote to cycle through"
+  entities:
+    - switch.keuken_sfeer
+    - light.keuken_werk
+    - switch.woonkamer_plafond
+    - switch.av_tafellamp
+    - light.av_meubel
+    - light.livingcolors
+    - light.bureau
+scenes_for_remote:
+  name: "Scences for round Ikea remote to cycle through"
+  entities:
+    - script.scene_overdag
+    - script.scene_avond
+    - script.scene_avond2
+    - script.scene_relax
+    - script.scene_nachtlicht
