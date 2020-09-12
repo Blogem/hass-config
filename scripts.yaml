@@ -385,3 +385,7 @@ spotify_op_pi_uit:
   - service: media_player.media_pause
     data:
       entity_id: media_player.spotify_jochem_van_leeuwen
+
+restart_raspotify:
+  sequence:
+  - service: shell_command.restart_raspotify
