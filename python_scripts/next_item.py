@@ -1,5 +1,5 @@
 # for a group of entities, return item current+1 or if not exists, item 0
-# do something with the entity, based on typ
+# do something with the entity, based on type
 
 current_tracker = 'input_text.current_active_light'
 groupname = data.get('groupname')
@@ -17,13 +17,16 @@ group = hass.states.get(groupname)
 # loop around
 if next == len(group.attributes["entity_id"]):
   next = 0
+  # reset input_number
+  data = { "entity_id": counter, "value": 0}
+  hass.services.call('input_number', 'set_value', data)
 
 entity_id = group.attributes["entity_id"][next]
 entity_type = entity_id.split('.')[0]
 entity_name = entity_id.split('.')[1]
 logger.info('Entity: '+str(entity_id)+', type:'+entity_type)
 
-# save the name of the entity so we can use it in hass
+# save the name of the entity so we can use it in hass later on
 if entity_type in ('switch', 'light'):
   data = { "entity_id": current_tracker, "value": entity_id}
   hass.services.call('input_text', 'set_value', data)
@@ -31,14 +34,14 @@ if entity_type in ('switch', 'light'):
 # let the light announce itself
 if entity_type == 'switch':
   if hass.states.get(entity_id).state == 'on':
-    # on-off
+    # off-on
     data = { "entity_id": entity_id }
     hass.services.call('switch', 'turn_off', data)
     time.sleep(1)
     data = { "entity_id": entity_id }
     hass.services.call('switch', 'turn_on', data)
   else:
-    # off-on
+    # on-off
     data = { "entity_id": entity_id }
     hass.services.call('switch', 'turn_on', data)
     time.sleep(1)
@@ -62,8 +65,4 @@ elif entity_type == 'script':
   # execute the script
   hass.services.call('script', entity_name)
 
-
-# update counter to the next
-data = { "entity_id": counter, "value": next}
-hass.services.call('input_number', 'set_value', data)
 
