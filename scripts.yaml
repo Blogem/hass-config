@@ -60,19 +60,33 @@ spotify2chromecast:
         entity_id: media_player.chromebitch
 
 # speel spotify op pi af
-spotify2pi:
+spotify2pi_conditional:
   alias: "Speel spotify op pi af"
   sequence:
-    - wait_template: "{{ is_state('media_player.spotify_jochem_van_leeuwen', 'playing') }}"
-      timeout: '00:00:45'
-      continue_on_timeout: 'false'
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: timer.spotify_pause_timer
+        state: 'active'
+      - condition: state
+        entity_id: media_player.spotify_jochem_van_leeuwen
+        state: 'playing'
+      # - condition: template
+      #   wait_template: "{{ is_state('media_player.spotify_jochem_van_leeuwen', 'playing') }}"
+      #   timeout: '00:00:45'
+      #   continue_on_timeout: 'false'
+    - service: timer.cancel
+      entity_id: timer.spotify_pause_timer
+    - service: switch.turn_on
+      data:
+        entity_id: switch.onkyo
     - service: media_player.select_source
       data:
         entity_id: media_player.spotify_jochem_van_leeuwen
         source: 'pi'
-    - service: switch.turn_on
+    - service: media_player.media_play
       data:
-        entity_id: switch.onkyo
+        entity_id: media_player.spotify_jochem_van_leeuwen
 
 # Zigbee2mqtt - Scripts for renaming & removing devices
 zigbee2mqtt_rename:

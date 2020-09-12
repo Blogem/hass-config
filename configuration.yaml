@@ -98,3 +98,8 @@ timer:
   voordeur:
     name: Voordeur delay
     duration: '00:00:45'
+
+#timer voor spotify pause
+  spotify_pause_timer:
+    name: Spotify pause timer
+    duration: '00:05:00'

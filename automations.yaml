@@ -38,7 +38,7 @@
       entity_id: timer.voordeur
   - service: script.scene_overdag
   #- service: script.spotify2chromecast
-  - service: script.spotify2pi
+  - service: script.spotify2pi_conditional
   - service: script.radiator_woonkamer_on
 
 - alias: Home (avond)
@@ -57,7 +57,7 @@
       entity_id: timer.voordeur
   - service: script.scene_avond
   #- service: script.spotify2chromecast
-  - service: script.spotify2pi
+  - service: script.spotify2pi_conditional
   - service: script.radiator_woonkamer_on
   id: e53a8b9a452d4a5f9f8cc2fbbd948681
 
@@ -521,6 +521,8 @@
   - condition: state
     state: 'off'
     entity_id: media_player.chromebitch
+  - condition: template
+    value_template: "{% if not is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'pi') %}true{% endif %}"
   - service: switch.turn_off
     entity_id: switch.onkyo
 
@@ -706,3 +708,24 @@
     entity_id: input_boolean.onkyo_lock
   - service: switch.turn_off
     entity_id: switch.onkyo
+
+- id: start_spotify_paused_timer
+  alias: Start timer when spotify is paused
+  trigger:
+    platform: state
+    entity_id: media_player.spotify_jochem_van_leeuwen
+    to: 'paused'
+  action:
+    service: timer.start
+    entity_id: timer.spotify_pause_timer
+
+- id: start_spotify_paused_timer2
+  alias: Start timer when spotify goes from playing to idle
+  trigger:
+    platform: state
+    entity_id: media_player.spotify_jochem_van_leeuwen
+    from: 'paused'
+    to: 'idle'
+  action:
+    service: timer.start
+    entity_id: timer.spotify_pause_timer
