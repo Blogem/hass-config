@@ -684,3 +684,25 @@
   action:
   - service: switch.turn_on
     entity_id: switch.onkyo
+
+- id: onyo_on_set_lock
+  alias: Switch lock on when button is pressed
+  trigger:
+    platform: state
+    entity_id: sensor.onkyo_onoff_switch_action
+    to: 'on'
+  action:
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.onkyo_lock
+
+- id: onkyo_off_set_lock
+  alias: Switch lock off and turn onkyo off when button is pressed
+  trigger:
+    platform: state
+    entity_id: sensor.onkyo_onoff_switch_action
+    to: 'off'
+  action:
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.onkyo_lock
+  - service: switch.turn_off
+    entity_id: switch.onkyo
