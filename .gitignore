@@ -6,7 +6,10 @@ home-assistant_v2.db
 home-assistant_v2.db-shm
 home-assistant_v2.db-wal
 secrets.yaml
-custom_components/
+custom_components/hacs/
+custom_components/spotcast/
+custom_components/raspotify/node_modules/
+custom_components/raspotify/package-lock.json
 deps/
 themes/
 tts/
