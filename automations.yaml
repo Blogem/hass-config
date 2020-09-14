@@ -826,7 +826,7 @@
         entity_id: "{{ states.input_text.current_active_light.state }}"
 
 - id: round_remote_left
-  alias: Round remote select light in reverse\
+  alias: Round remote select light in reverse
   mode: parallel
   trigger:
     platform: state
