@@ -402,37 +402,51 @@
   - service: switch.turn_on
     entity_id: switch.onkyo
 
-- id: onkyo_start_playing_optic
+# - id: onkyo_start_playing_optic
+#   alias: Zet onkyo aan als Spotify op pi afspeelt
+#   trigger:
+#     platform: state
+#     entity_id: media_player.spotify_jochem_van_leeuwen
+#     to: 'playing'
+#   condition:
+#     condition: and
+#     conditions:
+#     - condition: state
+#       state: 'off'
+#       entity_id: switch.onkyo
+#     - condition: template
+#       value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'pi') }}"
+#   action:
+#   - service: switch.turn_on
+#     entity_id: switch.onkyo
+
+# - id: onkyo_start_playing_optic2
+#   alias: Zet onkyo aan als Spotify op pi afspeelt (trigger = source)
+#   trigger:
+#     platform: template
+#     value_template: "{% if is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'pi') %}true{% endif %}"
+#   condition:
+#     condition: and
+#     conditions:
+#     - condition: state
+#       state: 'off'
+#       entity_id: switch.onkyo
+#     - condition: template
+#       value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'pi') }}"
+#   action:
+#   - service: switch.turn_on
+#     entity_id: switch.onkyo
+
+- id: onkyo_start_playing_raspotify
   alias: Zet onkyo aan als Spotify op pi afspeelt
   trigger:
-    platform: state
-    entity_id: media_player.spotify_jochem_van_leeuwen
-    to: 'playing'
+    platform: mqtt
+    topic: raspotify/playEvent
+    payload: "start"
   condition:
-    condition: and
-    conditions:
-    - condition: state
-      state: 'off'
-      entity_id: switch.onkyo
-    - condition: template
-      value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'pi') }}"
-  action:
-  - service: switch.turn_on
-    entity_id: switch.onkyo
-
-- id: onkyo_start_playing_optic2
-  alias: Zet onkyo aan als Spotify op pi afspeelt (trigger = source)
-  trigger:
-    platform: template
-    value_template: "{% if is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'pi') %}true{% endif %}"
-  condition:
-    condition: and
-    conditions:
-    - condition: state
-      state: 'off'
-      entity_id: switch.onkyo
-    - condition: template
-      value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'pi') }}"
+  - condition: state
+    state: 'off'
+    entity_id: 'switch.onkyo'
   action:
   - service: switch.turn_on
     entity_id: switch.onkyo
@@ -479,12 +493,59 @@
   - service: switch.turn_off
     entity_id: switch.onkyo
 
-- id: onkyo_stop_playing_optic
+# - id: onkyo_stop_playing_optic
+#   alias: Zet onkyo uit als Spotify op pi uit gaat
+#   trigger:
+#     platform: state
+#     entity_id: media_player.spotify_jochem_van_leeuwen
+#     to: 'idle'
+#   condition:
+#     condition: and
+#     conditions:
+#     - condition: state
+#       state: 'on'
+#       entity_id: switch.onkyo
+#     - condition: state
+#       state: 'off'
+#       entity_id: input_boolean.onkyo_lock
+#   action:
+#   - delay: 00:00:17
+#   - condition: state
+#     state: 'off'
+#     entity_id: media_player.chromebitch
+#   - service: switch.turn_off
+#     entity_id: switch.onkyo
+
+# - id: onkyo_stop_playing_optic2
+#   alias: Zet onkyo uit als Spotify op pi uit gaat (trigger = andere source)
+#   trigger:
+#     platform: template
+#     value_template: "{% if not is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'pi') %}true{% endif %}"
+#   condition:
+#     condition: and
+#     conditions:
+#     - condition: state
+#       state: 'on'
+#       entity_id: switch.onkyo
+#     - condition: state
+#       state: 'off'
+#       entity_id: input_boolean.onkyo_lock
+#   action:
+#   - delay: 00:00:17
+#   - condition: state
+#     state: 'off'
+#     entity_id: media_player.chromebitch
+#   - condition: template
+#     value_template: "{% if not is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'pi') %}true{% endif %}"
+#   - service: switch.turn_off
+#     entity_id: switch.onkyo
+
+- id: onkyo_stop_playing_raspotify
   alias: Zet onkyo uit als Spotify op pi uit gaat
   trigger:
-    platform: state
-    entity_id: media_player.spotify_jochem_van_leeuwen
-    to: 'idle'
+    platform: mqtt
+    topic: raspotify/playEvent
+    payload: "stop"
   condition:
     condition: and
     conditions:
@@ -499,30 +560,6 @@
   - condition: state
     state: 'off'
     entity_id: media_player.chromebitch
-  - service: switch.turn_off
-    entity_id: switch.onkyo
-
-- id: onkyo_stop_playing_optic2
-  alias: Zet onkyo uit als Spotify op pi uit gaat (trigger = andere source)
-  trigger:
-    platform: template
-    value_template: "{% if not is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'pi') %}true{% endif %}"
-  condition:
-    condition: and
-    conditions:
-    - condition: state
-      state: 'on'
-      entity_id: switch.onkyo
-    - condition: state
-      state: 'off'
-      entity_id: input_boolean.onkyo_lock
-  action:
-  - delay: 00:00:17
-  - condition: state
-    state: 'off'
-    entity_id: media_player.chromebitch
-  - condition: template
-    value_template: "{% if not is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'pi') %}true{% endif %}"
   - service: switch.turn_off
     entity_id: switch.onkyo
 
