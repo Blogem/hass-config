@@ -16,3 +16,6 @@ radiator_woonkamer_max:
   
 onkyo_lock:
   name: "Onkyo lock"
+
+remote_hold:
+  name: "Remote hold"
