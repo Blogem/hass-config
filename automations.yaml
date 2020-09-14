@@ -388,6 +388,23 @@
   - service: switch.turn_off
     entity_id: switch.woonkamer_plafond
 
+- id: Platfondlamp_uit_timer
+  alias: Plafondlamp uit als het te licht is (trigger = timer)
+  trigger:
+    platform: time_pattern
+    minutes: /1
+  condition:
+  - condition: state
+    entity_id: switch.woonkamer_plafond
+    state: 'on'
+    for: '00:15:00'
+  - condition: numeric_state
+    entity_id: sensor.bewegingsmelder_illumance
+    above: 60
+  action:
+  - service: switch.turn_off
+    entity_id: switch.woonkamer_plafond
+
 - id: onkyo_start_playing
   alias: Zet onkyo aan als Chromebitch afspeelt
   trigger:
@@ -798,6 +815,7 @@
 
 - id: round_remote_toggle
   alias: Round remote toggle light or switch
+  mode: parallel
   trigger:
     platform: state
     entity_id: sensor.ronde_remote_action
@@ -808,7 +826,8 @@
         entity_id: "{{ states.input_text.current_active_light.state }}"
 
 - id: round_remote_left
-  alias: Round remote select light in reverse
+  alias: Round remote select light in reverse\
+  mode: parallel
   trigger:
     platform: state
     entity_id: sensor.ronde_remote_action
@@ -822,6 +841,7 @@
 
 - id: round_remote_right
   alias: Round remote select light forwards
+  mode: parallel
   trigger:
     platform: state
     entity_id: sensor.ronde_remote_action
@@ -835,6 +855,7 @@
 
 - id: round_remote_up
   alias: Round remote select scene in reverse
+  mode: parallel
   trigger:
     platform: state
     entity_id: sensor.ronde_remote_action
@@ -848,6 +869,7 @@
 
 - id: round_remote_down
   alias: Round remote select scene forwards
+  mode: parallel
   trigger:
     platform: state
     entity_id: sensor.ronde_remote_action
