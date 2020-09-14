@@ -4,6 +4,7 @@
 def pulse(entity_id):
   try:
     # pulse: go to 100%, then 1% brightness, then back to original
+    # too complicated and slow, using blink now
     state = hass.states.get(entity_id)
     original_status = state.state
 
@@ -45,6 +46,24 @@ def pulse(entity_id):
     logger.error('Failed pulsing light!')
     logger.info(e)
     return False
+
+def blink(entity_id):
+  # blink lights and switches
+
+  logger.info('Blinking '+entity_id+'...')
+
+  entity_type = entity_id.split('.')[0]
+  data = { "entity_id": entity_id }
+  
+  hass.services.call(entity_type, 'toggle', data)
+  if entity_id == 'switch.woonkamer_plafond':
+    # this switch doesn't like 1/5s
+    time.sleep(1/2)
+  else:
+    time.sleep(1/5)
+  hass.services.call(entity_type, 'toggle', data)
+
+  return True
         
 
 current_tracker = 'input_text.current_active_light'
@@ -90,27 +109,8 @@ if entity_type in ('switch', 'light'):
   data = { "entity_id": current_tracker, "value": entity_id}
   hass.services.call('input_text', 'set_value', data)
 
-# let the light announce itself
-status = hass.states.get(entity_id).state
-if entity_type == 'switch':
-  if status == 'on':
-    # off-on
-    data = { "entity_id": entity_id }
-    hass.services.call('switch', 'turn_off', data)
-    time.sleep(1/5)
-    data = { "entity_id": entity_id }
-    hass.services.call('switch', 'turn_on', data)
-  else:
-    # on-off
-    data = { "entity_id": entity_id }
-    hass.services.call('switch', 'turn_on', data)
-    time.sleep(1/5)
-    data = { "entity_id": entity_id }
-    hass.services.call('switch', 'turn_off', data)
-
-elif entity_type == 'light':
-  # pulse the light
-  pulse(entity_id)
+  # let the light announce itself
+  blink(entity_id)
 
 elif entity_type == 'script':
   # execute the script

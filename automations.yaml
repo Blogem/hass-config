@@ -880,3 +880,63 @@
       groupname: 'group.scenes_for_remote'
       counter: 'input_number.cntr_scenes'
       direction: 'forward'
+
+- id: round_remote_up_hold
+  alias: Round remote start brightening
+  trigger:
+    - platform: state
+      entity_id: sensor.ronde_remote_action
+      to: brightness_up_hold
+  condition:
+  - condition: template
+    value_template: "{{ is_state(states.input_text.current_active_light.state, 'on') }}"
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.remote_hold
+    - service: python_script.change_attribute_light_smoothly
+      data_template:
+        entity_id: "{{ states.input_text.current_active_light.state }}"
+        input_boolean: 'input_boolean.remote_hold'
+        delta: 5
+        delay: 75
+
+- id: round_remote_down_hold
+  alias: Round remote start dimming
+  trigger:
+    - platform: state
+      entity_id: sensor.ronde_remote_action
+      to: brightness_down_hold
+  condition:
+  - condition: template
+    value_template: "{{ is_state(states.input_text.current_active_light.state, 'on') }}"
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.remote_hold
+    - service: python_script.change_attribute_light_smoothly
+      data_template:
+        entity_id: "{{ states.input_text.current_active_light.state }}"
+        input_boolean: 'input_boolean.remote_hold'
+        delta: -5
+        delay: 75
+
+- id: round_remote_up_down_release
+  alias: Round remote stop brightening or dimming
+  initial_state: "on"
+  trigger:
+    - platform: state
+      entity_id: sensor.ronde_remote_action
+      to: brightness_up_release
+    - platform: state
+      entity_id: sensor.ronde_remote_action
+      to: brightness_down_release
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.remote_hold
+        state: "on"
+      - condition: template
+        value_template: "{{ is_state(states.input_text.current_active_light.state, 'on') }}"
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.remote_hold
