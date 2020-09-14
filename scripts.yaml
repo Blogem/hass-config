@@ -199,6 +199,10 @@ scene_overdag:
     - service: light.turn_off
       data_template:
         entity_id: light.livingcolors
+    - service: input_number.set_value
+      entity_id: input_number.cntr_scenes
+      data:
+        value: 0
 scene_avond:
   sequence:
     - service: script.turn_on_ikea_light_color_temp
@@ -232,7 +236,10 @@ scene_avond:
       entity_id: switch.woonkamer_plafond
     - service: switch.turn_off
       entity_id: switch.av_tafellamp
-
+    - service: input_number.set_value
+      entity_id: input_number.cntr_scenes
+      data:
+        value: 1
 scene_avond2:
   sequence:
     - service: script.turn_on_ikea_light_color_temp
@@ -266,6 +273,10 @@ scene_avond2:
       entity_id: switch.woonkamer_plafond
     - service: switch.turn_on
       entity_id: switch.av_tafellamp
+    - service: input_number.set_value
+      entity_id: input_number.cntr_scenes
+      data:
+        value: 2
 scene_relax:
   sequence:
     - service: script.turn_on_ikea_light_rgb_color
@@ -297,6 +308,10 @@ scene_relax:
         brightness: 35
         transition: 5
         xy_color: [0.582, 0.395]
+    - service: input_number.set_value
+      entity_id: input_number.cntr_scenes
+      data:
+        value: 3
 scene_nachtlicht:
   sequence:
     - service: script.turn_on_ikea_light_rgb_color
@@ -321,6 +336,10 @@ scene_nachtlicht:
     - service: light.turn_off
       data_template:
         entity_id: light.bureau
+    - service: input_number.set_value
+      entity_id: input_number.cntr_scenes
+      data:
+        value: 4
 scene_uit:
   sequence:
     - service: light.turn_off
@@ -341,6 +360,11 @@ scene_uit:
     - service: light.turn_off
       data_template:
         entity_id: light.bureau
+    - service: input_number.set_value
+      entity_id: input_number.cntr_scenes
+      data:
+        value: 5
+
 radiator_woonkamer_on:
   sequence:
   - service: mqtt.publish

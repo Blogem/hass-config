@@ -687,6 +687,20 @@
   - service: switch.turn_on
     entity_id: switch.onkyo
 
+- id: onkyo_off_at_unlock
+  alias: Switch Onkyo on when lock is turned off
+  trigger:
+    platform: state
+    entity_id: input_boolean.onkyo_lock
+    to: 'off'
+  condition:
+  - condition: state
+    state: 'on'
+    entity_id: switch.onkyo
+  action:
+  - service: switch.turn_off
+    entity_id: switch.onkyo
+
 - id: onyo_on_set_lock
   alias: Switch lock on when button is pressed
   trigger:
@@ -706,8 +720,6 @@
   action:
   - service: input_boolean.turn_off
     entity_id: input_boolean.onkyo_lock
-  - service: switch.turn_off
-    entity_id: switch.onkyo
 
 - id: start_spotify_paused_timer
   alias: Start timer when spotify is paused
@@ -729,3 +741,66 @@
   action:
     service: timer.start
     entity_id: timer.spotify_pause_timer
+
+- id: round_remote_toggle
+  alias: Round remote toggle light or switch
+  trigger:
+    platform: state
+    entity_id: sensor.ronde_remote_action
+    to: toggle
+  action:
+    - service_template: "{{ (states.input_text.current_active_light.state).split('.')[0] }}.toggle"
+      data_template:
+        entity_id: "{{ states.input_text.current_active_light.state }}"
+
+- id: round_remote_left
+  alias: Round remote select light in reverse
+  trigger:
+    platform: state
+    entity_id: sensor.ronde_remote_action
+    to: arrow_left_click
+  action:
+  - service: python_script.next_item
+    data:
+      groupname: 'group.lights_for_remote'
+      counter: 'input_number.cntr_lights'
+      direction: 'reverse'
+
+- id: round_remote_right
+  alias: Round remote select light forwards
+  trigger:
+    platform: state
+    entity_id: sensor.ronde_remote_action
+    to: arrow_right_click
+  action:
+  - service: python_script.next_item
+    data:
+      groupname: 'group.lights_for_remote'
+      counter: 'input_number.cntr_lights'
+      direction: 'forward'
+
+- id: round_remote_up
+  alias: Round remote select scene in reverse
+  trigger:
+    platform: state
+    entity_id: sensor.ronde_remote_action
+    to: brightness_up_click
+  action:
+  - service: python_script.next_item
+    data:
+      groupname: 'group.scenes_for_remote'
+      counter: 'input_number.cntr_scenes'
+      direction: 'reverse'
+
+- id: round_remote_down
+  alias: Round remote select scene forwards
+  trigger:
+    platform: state
+    entity_id: sensor.ronde_remote_action
+    to: brightness_down_click
+  action:
+  - service: python_script.next_item
+    data:
+      groupname: 'group.scenes_for_remote'
+      counter: 'input_number.cntr_scenes'
+      direction: 'forward'

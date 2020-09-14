@@ -56,9 +56,9 @@ direction = data.get('direction')
 data = { "entity_id": counter }
 
 if direction == 'forward':
-  hass.services.call('input_number', 'increment', data)
+  hass.services.call('input_number', 'increment', data, True)
 else: # reverse
-  hass.services.call('input_number', 'decrement', data)
+  hass.services.call('input_number', 'decrement', data, True)
 
 index = int(float(hass.states.get(counter).state))
 
@@ -67,7 +67,7 @@ group = hass.states.get(groupname)
 num_entities = len(group.attributes["entity_id"])
 
 # loop forward
-if index == num_entities and direction == 'forward':
+if index >= num_entities and direction == 'forward':
   index = 0
   data = { "entity_id": counter, "value": 0}
   hass.services.call('input_number', 'set_value', data)
@@ -97,32 +97,23 @@ if entity_type == 'switch':
     # off-on
     data = { "entity_id": entity_id }
     hass.services.call('switch', 'turn_off', data)
-    time.sleep(1)
+    time.sleep(1/5)
     data = { "entity_id": entity_id }
     hass.services.call('switch', 'turn_on', data)
   else:
     # on-off
     data = { "entity_id": entity_id }
     hass.services.call('switch', 'turn_on', data)
-    time.sleep(1)
+    time.sleep(1/5)
     data = { "entity_id": entity_id }
     hass.services.call('switch', 'turn_off', data)
 
 elif entity_type == 'light':
-  # if status == 'on':
+  # pulse the light
   pulse(entity_id)
-
-  # else:
-  #   # on-pulse-off
-  #   # data = { "entity_id": entity_id }
-  #   # hass.services.call('light', 'turn_on', data)
-  #   pulse(entity_id)
-  #   # time.sleep(1)
-  #   # data = { "entity_id": entity_id }
-  #   # hass.services.call('light', 'turn_off', data)
 
 elif entity_type == 'script':
   # execute the script
-  hass.services.call('script', entity_name)
+  hass.services.call('script', entity_name, None, True)
 
 
