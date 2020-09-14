@@ -535,6 +535,15 @@
   action:
     service: script.spotify_op_pi_uit
 
+- id: chromecast_stop_als_onkyo_uit
+  alias: Zet Chromecast uit als onkyo uit gaat
+  trigger:
+    platform: state
+    entity_id: switch.onkyo
+    to: 'off'
+  action:
+    service: media_player.media_pause
+    entity_id: media_player.chromebitch
 
 - id: radiator_woonkamer_on
   alias: Switch Radiator in Woonkamer on
