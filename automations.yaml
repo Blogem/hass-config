@@ -490,6 +490,9 @@
   - condition: state
     state: 'off'
     entity_id: media_player.chromebitch
+  - condition: state
+    state: 'stop'
+    entity_id: sensor.raspotify_playevent
   - service: switch.turn_off
     entity_id: switch.onkyo
 
