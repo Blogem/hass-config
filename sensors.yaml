@@ -53,3 +53,8 @@
       friendly_name: "Warmtevraag"
       entity_id: climate.radiatorknop
       value_template: "{{ state_attr('climate.radiatorknop', 'pi_heating_demand') }}"  
+
+# raspotify. monitoring playEvent
+- platform: mqtt
+  name: Raspotify playEvent
+  state_topic: raspotify/playEvent

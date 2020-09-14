@@ -440,9 +440,9 @@
 - id: onkyo_start_playing_raspotify
   alias: Zet onkyo aan als Spotify op pi afspeelt
   trigger:
-    platform: mqtt
-    topic: raspotify/playEvent
-    payload: "start"
+    platform: state
+    entity_id: 'sensor.raspotify_playevent'
+    to: 'start'
   condition:
   - condition: state
     state: 'off'
@@ -543,9 +543,9 @@
 - id: onkyo_stop_playing_raspotify
   alias: Zet onkyo uit als Spotify op pi uit gaat
   trigger:
-    platform: mqtt
-    topic: raspotify/playEvent
-    payload: "stop"
+    platform: state
+    entity_id: 'sensor.raspotify_playevent'
+    to: 'stop'
   condition:
     condition: and
     conditions:
@@ -556,10 +556,15 @@
       state: 'off'
       entity_id: input_boolean.onkyo_lock
   action:
-  - delay: 00:00:17
+  # wait long enough for the source in the spotify API to change to another device (e.g. phone)
+  # delay is also needed to allow the user to switch to another device on the onkyo (i.e. chromebitch)
+  - delay: 00:00:30
   - condition: state
     state: 'off'
     entity_id: media_player.chromebitch
+  - condition: state
+    state: 'stop'
+    entity_id: sensor.raspotify_playevent
   - service: switch.turn_off
     entity_id: switch.onkyo
 
