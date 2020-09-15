@@ -16,6 +16,24 @@ concertzender:
         media_content_id: http://streams.greenhost.nl:8080/live
         media_content_type: 'audio/mp4'
 
+# speel random track op vlc
+random_vlc:
+  alias: "Random track op VLC"
+  sequence:
+    - service: switch.turn_on
+      data:
+        entity_id: switch.onkyo
+    - service: media_player.volume_set
+      data:
+        entity_id: media_player.vlc
+        volume_level: 0.01
+    - delay: '00:00:01'
+    - service: media_player.play_media
+      data_template:
+        entity_id: media_player.vlc
+        media_content_id: '{{ states("sensor.random_flac") }}' 
+        media_content_type: 'music'
+
 spotifyambientmusiclistige:
   alias: "Spotify AmbientMusic Listige"
   sequence:

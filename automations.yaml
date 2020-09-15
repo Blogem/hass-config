@@ -237,14 +237,16 @@
       transition: 1800
       brightness: 240
   - delay: 00:15:00
-  - service: script.concertzender
+  #- service: script.concertzender
+  - service: script.random_vlc
   - service: python_script.volume_transition
     data:
-      entity_id: media_player.chromebitch
+      #entity_id: media_player.chromebitch
+      entity_id: media_player.vlc
       transition_duration: 900
       sleep_delay: 3
-      start_level: 0.01
-      end_level: 0.5
+      start_level: 0.1
+      end_level: 0.6
   id: 47d31d79b0e1410b8c4f5cb311dc92dd
 
 - alias: Zigbee2mqtt Log Level
@@ -453,6 +455,19 @@
 #   action:
 #   - service: switch.turn_on
 #     entity_id: switch.onkyo
+
+- id: kill_vlc_for_raspotify
+  alias: Kill VLC als raspotify gaat spelen
+  trigger:
+    platform: state
+    entity_id: sensor.raspotify_playevent
+    to: 'start'
+  condition:
+  - condition: template
+    value_template: "{{ states('media_player.vlc') != 'idle' }}"
+  action:
+  - service: media_player.media_stop
+    entity_id: media_player.vlc
 
 - id: onkyo_start_playing_raspotify
   alias: Zet onkyo aan als Spotify op pi afspeelt

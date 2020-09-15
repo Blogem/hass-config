@@ -65,6 +65,9 @@ shell_command:
   get_url: curl -X GET '{{ url }}'
   restart_raspotify: sudo systemctl restart raspotify.service
 
+media_player:
+  - platform: vlc
+
 # ZIGBEE2MQTT
 # Input select for Zigbee2mqtt debug level
 input_select:
