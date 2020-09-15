@@ -61,7 +61,8 @@
 
 - platform: command_line
   name: random_mp3
-  command: "find /home/homeassistant/mp3/ -type f -name '*.mp3' | shuf -n 1"
+  #command: "find /home/homeassistant/mp3/new/ -type f -name '*.mp3' | shuf -n 1"
+  command: "find /home/homeassistant/.homeassistant/custom_components/frameworkradiodownloader/ -type f -name '*.mp3' | shuf -n 1"
 - platform: command_line
   name: random_flac
-  command: "find /home/homeassistant/mp3/ -type f -name '*.flac' | shuf -n 1"
+  command: "find /home/homeassistant/mp3/new/ -type f -name '*.flac' | shuf -n 1"

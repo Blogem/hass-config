@@ -125,3 +125,13 @@ timer:
   spotify_pause_timer:
     name: Spotify pause timer
     duration: '00:05:00'
+
+# keep track of new mp3s for alarm clock
+homeassistant:
+  allowlist_external_dirs:
+    - /home/homeassistant/mp3/played/
+
+folder_watcher:
+  - folder: /home/homeassistant/mp3/played/
+    patterns:
+      - '*.mp3'

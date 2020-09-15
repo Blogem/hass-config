@@ -421,6 +421,33 @@
   - service: switch.turn_on
     entity_id: switch.onkyo
 
+- id: pause_raspotify_for_chromebitch
+  alias: Zet raspotify op pauze als Chromebitch afspeelt
+  trigger:
+    platform: state
+    entity_id: media_player.chromebitch
+    to: 'playing'
+  condition:
+  - condition: template
+    value_template: "{{ states('sensor.raspotify_playevent') != 'stop' }}"
+  action:
+  - service: media_player.media_pause
+    entity_id: media_player.spotify_jochem_van_leeuwen
+
+- id: pause_chromebitch_for_raspotify
+  alias: Zet Chromebitch op pauze als raspotify afspeelt
+  trigger:
+    platform: state
+    entity_id: sensor.raspotify_playevent
+    to: 'start'
+  condition:
+  - condition: state
+    entity_id: 'media_player.chromebitch'
+    state: 'playing'
+  action:
+  - service: media_player.media_pause
+    entity_id: media_player.chromebitch
+
 # - id: onkyo_start_playing_optic
 #   alias: Zet onkyo aan als Spotify op pi afspeelt
 #   trigger:
@@ -621,6 +648,17 @@
   action:
     service: media_player.media_pause
     entity_id: media_player.chromebitch
+
+- id: vlc_stop_als_onkyo_uit
+  alias: Zet VLC uit als onkyo uit gaat
+  trigger:
+    platform: state
+    entity_id: switch.onkyo
+    to: 'off'
+  action:
+    service: media_player.media_stop
+    entity_id: media_player.vlc
+
 
 - id: radiator_woonkamer_on
   alias: Switch Radiator in Woonkamer on

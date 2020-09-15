@@ -31,7 +31,15 @@ random_vlc:
     - service: media_player.play_media
       data_template:
         entity_id: media_player.vlc
-        media_content_id: '{{ states("sensor.random_flac") }}' 
+        media_content_id: '{{ states("sensor.random_mp3") }}' 
+        media_content_type: 'music'
+
+test_random_vlc:
+  sequence:
+    - service: media_player.play_media
+      data_template:
+        entity_id: media_player.vlc
+        media_content_id: '{{ states("sensor.random_mp3") }}' 
         media_content_type: 'music'
 
 spotifyambientmusiclistige:
