@@ -10,6 +10,8 @@ custom_components/hacs/
 custom_components/spotcast/
 custom_components/raspotify/node_modules/
 custom_components/raspotify/package-lock.json
+custom_components/frameworkradiodownloader/*.mp3
+custom_components/frameworkradiodownloader/*.tmp
 deps/
 themes/
 tts/
