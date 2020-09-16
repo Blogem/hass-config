@@ -14,14 +14,12 @@ with urllib.request.urlopen(FR_ARCHIVE_PAGE) as response:
 soup = BeautifulSoup(fr_archive, features="lxml")
 
 links = []
-i = 0
 for link in soup.find_all('a'):
     href = link.get('href')
     # only download episodes from 600 and up (up to 9999)
     result = re.match('^.*/\d{4}/\d{2}/([6-9]\d{2}|[1-9]\d{3})-.*$', href)
 
     if result:
-        i += 1
         print('Parsing '+href)
         with urllib.request.urlopen(href) as response:
             fr_podcast = response.read()
@@ -38,9 +36,10 @@ for link in soup.find_all('a'):
 links = deduplicatelist(links)
 
 for link in links:
+    # todo: check if file already exists in local filesystem
     print('Downloading '+link)
     file = wget.download(link)
-    print ('Downloaded '+file)
+    print ('\nDownloaded '+file)
 
 
 
