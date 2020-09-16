@@ -410,3 +410,4 @@ spotify_op_pi_uit:
 restart_raspotify:
   sequence:
   - service: shell_command.restart_raspotify
+  

@@ -238,8 +238,6 @@
       brightness: 240
   - delay: 00:05:00
   - service: shell_command.move_frameworkradio
-    data:
-      file: '{{ states("sensor.random_mp3") }}'
   id: 47d31d79b0e1410b8c4f5cb311dc92dd
 
 - alias: Alarm clock
