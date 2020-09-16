@@ -64,6 +64,7 @@ spotify:
 shell_command:
   get_url: curl -X GET '{{ url }}'
   restart_raspotify: sudo systemctl restart raspotify.service
+  move_frameworkradio: mv '{{ file }}' /home/homeassistant/mp3/played/
 
 media_player:
   - platform: vlc

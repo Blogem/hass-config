@@ -236,9 +236,33 @@
     data:
       transition: 1800
       brightness: 240
-  - delay: 00:15:00
+  - delay: 00:05:00
+  - service: shell_command.move_frameworkradio
+    data:
+      file: '{{ states("sensor.random_mp3") }}'
   #- service: script.concertzender
-  - service: script.random_vlc
+  id: 47d31d79b0e1410b8c4f5cb311dc92dd
+
+- alias: Alarm clock
+  trigger:
+    platform: event
+    event_type: folder_watcher
+    event_data:
+      event_type: created
+  action:
+  - service: switch.turn_on
+    data:
+      entity_id: switch.onkyo
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.vlc
+      volume_level: 0.01
+  - delay: '00:00:01'
+  - service: media_player.play_media
+    data_template:
+      entity_id: media_player.vlc
+      media_content_id: '{{ trigger.event.data.path }}'
+      media_content_type: 'music'
   - service: python_script.volume_transition
     data:
       #entity_id: media_player.chromebitch
@@ -246,8 +270,7 @@
       transition_duration: 900
       sleep_delay: 3
       start_level: 0.1
-      end_level: 0.6
-  id: 47d31d79b0e1410b8c4f5cb311dc92dd
+      end_level: 0.5
 
 - alias: Zigbee2mqtt Log Level
   initial_state: 'on'
