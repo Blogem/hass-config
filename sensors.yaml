@@ -33,25 +33,21 @@
   sensors:
     radiatorknop_battery:
       friendly_name: "Radiator battery"
-      entity_id: climate.radiatorknop
       unit_of_measurement: '%'
       device_class: 'battery'
       value_template: "{{ state_attr('climate.radiatorknop', 'battery') }}"
     radiatorknop_temperature:
       friendly_name: "Huidige temperatuur"
-      entity_id: climate.radiatorknop
       unit_of_measurement: '°C'
       device_class: 'temperature'
       value_template: "{{ state_attr('climate.radiatorknop', 'current_temperature') }}"
     radiatorknop_temperature_setpoint:
       friendly_name: "Doel temperatuur"
-      entity_id: climate.radiatorknop
       unit_of_measurement: '°C'
       device_class: 'temperature'
       value_template: "{{ state_attr('climate.radiatorknop', 'temperature') }}"
     radiatorknop_heatingdemand:
       friendly_name: "Warmtevraag"
-      entity_id: climate.radiatorknop
       value_template: "{{ state_attr('climate.radiatorknop', 'pi_heating_demand') }}"  
 
 # raspotify. monitoring playEvent
