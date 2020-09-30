@@ -7,7 +7,8 @@
     to: not_home
   condition: []
   action:
-  - service: script.radiator_woonkamer_off
+  - service: script.turn_on
+    entity_id: script.radiator_woonkamer_off
   - service: script.scene_uit
   - service: script.spotify_op_pi_uit
   - data:
@@ -92,7 +93,8 @@
     webhook_id: !secret webhook_tasker_uit
   condition: []
   action:
-  - service: script.radiator_woonkamer_off
+  - service: script.turn_on
+    entity_id: script.radiator_woonkamer_off
   - service: script.scene_uit
   - service: script.spotify_op_pi_uit
   - data:
@@ -200,7 +202,8 @@
   - platform: webhook
     webhook_id: !secret webhook_tasker_radiatoruit
   action:
-  - service: script.radiator_woonkamer_off
+  - service: script.turn_on
+    entity_id: script.radiator_woonkamer_off
 
 - alias: Wake-up light
   trigger:
@@ -260,6 +263,9 @@
       entity_id: media_player.vlc
       media_content_id: '{{ trigger.event.data.path }}'
       media_content_type: 'music'
+  - service: shell_command.touch_frameworkradio
+    data:
+      file: '{{ trigger.event.data.path }}'
   - service: python_script.volume_transition
     data:
       entity_id: media_player.vlc
@@ -568,9 +574,10 @@
   - condition: state
     state: 'off'
     entity_id: media_player.chromebitch
-  - condition: state
-    state: 'stop'
-    entity_id: sensor.raspotify_playevent
+  - condition: template
+    value_template: "{{ states('sensor.raspotify_playevent') != 'start' }}"
+  - condition: template
+    value_template: "{{ states('media_player.vlc') != 'playing' }}"
   - service: switch.turn_off
     entity_id: switch.onkyo
 
@@ -643,9 +650,33 @@
   - condition: state
     state: 'off'
     entity_id: media_player.chromebitch
+  - condition: template
+    value_template: "{{ states('sensor.raspotify_playevent') != 'start' }}"
+  - condition: template
+    value_template: "{{ states('media_player.vlc') != 'playing' }}"
+  - service: switch.turn_off
+    entity_id: switch.onkyo
+
+- id: onkyo_stop_playing_vlc
+  alias: Zet onkyo uit als VLC uit gaat
+  trigger:
+    platform: template
+    value_template: "{{ states('media_player.vlc') != 'playing' }}"
+    # platform: state
+    # entity_id: media_player.vlc
+    # to: 'off' # paused? idle?
+  action:
+  - delay: 00:00:17
   - condition: state
-    state: 'stop'
-    entity_id: sensor.raspotify_playevent
+    state: 'off'
+    entity_id: input_boolean.onkyo_lock
+  - condition: state
+    state: 'off'
+    entity_id: media_player.chromebitch
+  - condition: template
+    value_template: "{{ states('sensor.raspotify_playevent') != 'start' }}"
+  - condition: template
+    value_template: "{{ states('media_player.vlc') != 'playing' }}"
   - service: switch.turn_off
     entity_id: switch.onkyo
 
@@ -695,7 +726,8 @@
     entity_id: input_boolean.radiator_woonkamer
     to: 'off'
   action:
-  - service: script.radiator_woonkamer_off
+  - service: script.turn_on
+    entity_id: script.radiator_woonkamer_off
 
 - id: radiator_woonkamer_max_on
   alias: Switch Radiator in Woonkamer Max on
@@ -704,7 +736,8 @@
     entity_id: input_boolean.radiator_woonkamer_max
     to: 'on'
   action:
-  - service: script.radiator_woonkamer_max_on
+  - service: script.turn_on
+    entity_id: script.radiator_woonkamer_max_on
 
 - id: spotifylaptop2chromebitch
   alias: Speel muziek van laptop op Chromcast
@@ -731,7 +764,8 @@
       - condition: template
         value_template: "{{ is_state_attr('media_player.spotify_jochem_van_leeuwen', 'source', 'DESKTOP-56IBQA7') }}"
   action:
-  - service: script.spotify2chromecast
+  - service: script.turn_on
+    entity_id: script.spotify2chromecast
 
 - id: to_tasker_radiatoruit
   alias: Stuur bericht radiatoruit naar tasker
@@ -863,6 +897,8 @@
   action:
   - service: input_boolean.turn_off
     entity_id: input_boolean.onkyo_lock
+  - service: switch.turn_off
+    entity_id: switch.onkyo
 
 - id: start_spotify_paused_timer
   alias: Start timer when spotify is paused

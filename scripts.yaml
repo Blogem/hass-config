@@ -104,6 +104,7 @@ flash_avmeubel:
 
 # ikea lights workaround
 turn_on_ikea_light_color_temp:
+  mode: parallel
   sequence:
     # Check whether the light is off (optional)
     #- condition: template
@@ -123,6 +124,7 @@ turn_on_ikea_light_color_temp:
         color_temp: "{{ color_temp }}"
         transition: 5
 turn_on_ikea_light_rgb_color:
+  mode: parallel
   sequence:
     # Check whether the light is off (optional)
     #- condition: template
@@ -142,6 +144,7 @@ turn_on_ikea_light_rgb_color:
         rgb_color: ["{{ r }}","{{ g }}","{{ b }}"]
         transition: 5
 turn_on_ikea_light_rgb_color2:
+  mode: parallel
   sequence:
     # Check whether the light is off (optional)
     #- condition: template
@@ -164,11 +167,13 @@ turn_on_ikea_light_rgb_color2:
 # Also checkout /local/community/lovelace-light-with-profiles/light-with-profiles.js
 scene_overdag:
   sequence:
-    - service: script.turn_on_ikea_light_color_temp
-      data_template:
-        entity_id: light.keuken_werk
-        brightness_pct: 94
-        color_temp: 263
+    - service: script.turn_on
+      entity_id: script.turn_on_ikea_light_color_temp
+      data:
+        variables:
+          entity_id: light.keuken_werk
+          brightness_pct: 94
+          color_temp: 263
     - service: switch.turn_off
       entity_id: switch.keuken_sfeer
     - service: switch.turn_off
@@ -188,25 +193,31 @@ scene_overdag:
         value: 0
 scene_avond:
   sequence:
-    - service: script.turn_on_ikea_light_color_temp
-      data_template:
-        entity_id: light.keuken_werk
-        brightness_pct: 81
-        color_temp: 403
-    - service: script.turn_on_ikea_light_rgb_color
-      data_template:
-        entity_id: light.av_meubel
-        brightness_pct: 80
-        r: 255
-        g: 170
-        b: 88
-    - service: script.turn_on_ikea_light_rgb_color2
-      data_template:
-        entity_id: light.bureau
-        brightness_pct: 63
-        r: 255
-        g: 149
-        b: 50
+    - service: script.turn_on
+      entity_id: script.turn_on_ikea_light_color_temp
+      data:
+        variables:
+          entity_id: light.keuken_werk
+          brightness_pct: 81
+          color_temp: 403
+    - service: script.turn_on
+      entity_id: script.turn_on_ikea_light_rgb_color
+      data:
+        variables:
+          entity_id: light.av_meubel
+          brightness_pct: 80
+          r: 255
+          g: 170
+          b: 88
+    - service: script.turn_on
+      entity_id: script.turn_on_ikea_light_rgb_color2
+      data:
+        variables:
+          entity_id: light.bureau
+          brightness_pct: 63
+          r: 255
+          g: 149
+          b: 50
     - service: light.turn_on
       data_template:
         entity_id: light.livingcolors
@@ -225,25 +236,31 @@ scene_avond:
         value: 1
 scene_avond2:
   sequence:
-    - service: script.turn_on_ikea_light_color_temp
-      data_template:
-        entity_id: light.keuken_werk
-        brightness_pct: 5
-        color_temp: 454
-    - service: script.turn_on_ikea_light_rgb_color
-      data_template:
-        entity_id: light.av_meubel
-        brightness_pct: 80
-        r: 255
-        g: 170
-        b: 88
-    - service: script.turn_on_ikea_light_rgb_color2
-      data_template:
-        entity_id: light.bureau
-        brightness_pct: 63
-        r: 255
-        g: 149
-        b: 50
+    - service: script.turn_on
+      entity_id: script.turn_on_ikea_light_color_temp
+      data:
+        variables:
+          entity_id: light.keuken_werk
+          brightness_pct: 5
+          color_temp: 454
+    - service: script.turn_on
+      entity_id: script.turn_on_ikea_light_rgb_color
+      data:
+        variables:
+          entity_id: light.av_meubel
+          brightness_pct: 80
+          r: 255
+          g: 170
+          b: 88
+    - service: script.turn_on
+      entity_id: script.turn_on_ikea_light_rgb_color2
+      data:
+        variables:
+          entity_id: light.bureau
+          brightness_pct: 63
+          r: 255
+          g: 149
+          b: 50
     - service: light.turn_on
       data_template:
         entity_id: light.livingcolors
@@ -262,20 +279,24 @@ scene_avond2:
         value: 2
 scene_relax:
   sequence:
-    - service: script.turn_on_ikea_light_rgb_color
-      data_template:
-        entity_id: light.av_meubel
-        brightness_pct: 22
-        r: 255
-        g: 149
-        b: 50
-    - service: script.turn_on_ikea_light_rgb_color2
-      data_template:
-        entity_id: light.bureau
-        brightness_pct: 11
-        r: 255
-        g: 96
-        b: 0
+    - service: script.turn_on
+      entity_id: script.turn_on_ikea_light_rgb_color
+      data:
+        variables:
+          entity_id: light.av_meubel
+          brightness_pct: 22
+          r: 255
+          g: 149
+          b: 50
+    - service: script.turn_on
+      entity_id: script.turn_on_ikea_light_rgb_color2
+      data:
+        variables:
+          entity_id: light.bureau
+          brightness_pct: 11
+          r: 255
+          g: 96
+          b: 0
     - service: switch.turn_on
       entity_id: switch.keuken_sfeer
     - service: switch.turn_off
@@ -283,8 +304,7 @@ scene_relax:
     - service: switch.turn_on
       entity_id: switch.av_tafellamp
     - service: light.turn_off
-      data_template:
-        entity_id: light.keuken_werk
+      entity_id: light.keuken_werk
     - service: light.turn_on
       data_template:
         entity_id: light.livingcolors
@@ -297,13 +317,15 @@ scene_relax:
         value: 3
 scene_nachtlicht:
   sequence:
-    - service: script.turn_on_ikea_light_rgb_color
-      data_template:
-        entity_id: light.av_meubel
-        brightness_pct: 1
-        r: 255
-        g: 96
-        b: 0
+    - service: script.turn_on
+      entity_id: script.turn_on_ikea_light_rgb_color
+      data:
+        variables:
+          entity_id: light.av_meubel
+          brightness_pct: 1
+          r: 255
+          g: 96
+          b: 0
     - service: switch.turn_off
       entity_id: switch.keuken_sfeer
     - service: switch.turn_off
