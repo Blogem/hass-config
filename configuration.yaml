@@ -65,7 +65,7 @@ shell_command:
   get_url: curl -X GET '{{ url }}'
   restart_raspotify: sudo systemctl restart raspotify.service
   move_frameworkradio: mv '{{ states("sensor.random_mp3") }}' /home/homeassistant/mp3/played/
-  touch_frameworkradio: touch '{{ file }}'
+  touch: touch '{{ file }}'
 
 media_player:
   - platform: vlc

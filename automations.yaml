@@ -263,7 +263,7 @@
       entity_id: media_player.vlc
       media_content_id: '{{ trigger.event.data.path }}'
       media_content_type: 'music'
-  - service: shell_command.touch_frameworkradio
+  - service: shell_command.touch
     data:
       file: '{{ trigger.event.data.path }}'
   - service: python_script.volume_transition
@@ -660,11 +660,9 @@
 - id: onkyo_stop_playing_vlc
   alias: Zet onkyo uit als VLC uit gaat
   trigger:
-    platform: template
-    value_template: "{{ states('media_player.vlc') != 'playing' }}"
-    # platform: state
-    # entity_id: media_player.vlc
-    # to: 'off' # paused? idle?
+    platform: state
+    entity_id: media_player.vlc
+    from: 'playing'
   action:
   - delay: 00:00:17
   - condition: state
