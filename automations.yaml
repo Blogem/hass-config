@@ -343,6 +343,36 @@
   - service: switch.turn_on
     entity_id: switch.woonkamer_plafond
 
+- id: Plafondlamp_aan_timer
+  alias: Plafondlamp aan als het donker is (trigger = timer)
+  trigger:
+    platform: time_pattern
+    minutes: '/1'
+  condition:
+    condition: and
+    conditions:
+    - condition: numeric_state
+      entity_id: sensor.bewegingsmelder_illuminance
+      below: 60
+    - condition: state
+      entity_id: light.keuken_werk
+      state: 'on'
+    - condition: state
+      entity_id: switch.woonkamer_plafond
+      state: 'off'
+      for: '00:15:00'
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: light.av_meubel
+        state: 'off'
+      - condition: state
+        entity_id: switch.av_tafellamp
+        state: 'off'
+  action:
+  - service: switch.turn_on
+    entity_id: switch.woonkamer_plafond
+
 #- id: Plafondlamp_bij_donker_occupancy
 #  alias: Plafondlamp aan als het donker is (occ)
 #  trigger:
@@ -419,14 +449,14 @@
   alias: Plafondlamp uit als het te licht is (trigger = timer)
   trigger:
     platform: time_pattern
-    minutes: /1
+    minutes: '/1'
   condition:
   - condition: state
     entity_id: switch.woonkamer_plafond
     state: 'on'
     for: '00:15:00'
   - condition: numeric_state
-    entity_id: sensor.bewegingsmelder_illumance
+    entity_id: sensor.bewegingsmelder_illuminance
     above: 60
   action:
   - service: switch.turn_off
@@ -706,7 +736,6 @@
   action:
     service: media_player.media_stop
     entity_id: media_player.vlc
-
 
 - id: radiator_woonkamer_on
   alias: Switch Radiator in Woonkamer on

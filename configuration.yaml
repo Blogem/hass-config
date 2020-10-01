@@ -54,6 +54,10 @@ spotify:
   client_id: !secret spotify_api_client_id
   client_secret: !secret spotify_api_client_secret
 
+home_connect:
+  client_id: !secret home_connect_client_id
+  client_secret: !secret home_connect_client_secret
+
 #hacs:
 #  token: !secret hacs_token
 #  sidepanel_title: HACS
