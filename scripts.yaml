@@ -432,4 +432,16 @@ spotify_op_pi_uit:
 restart_raspotify:
   sequence:
   - service: shell_command.restart_raspotify
-  
+
+start_kodi:
+  sequence:
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.onkyo_lock
+  - delay: '00:00:07'
+  - service: shell_command.start_kodi
+
+stop_kodi:
+  sequence:
+  - service: shell_command.stop_kodi
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.onkyo_lock

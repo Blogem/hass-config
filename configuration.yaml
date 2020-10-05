@@ -70,6 +70,8 @@ shell_command:
   restart_raspotify: sudo systemctl restart raspotify.service
   move_frameworkradio: mv '{{ states("sensor.random_mp3") }}' /home/homeassistant/mp3/played/
   touch: touch '{{ file }}'
+  start_kodi: /usr/bin/kodi &
+  stop_kodi: /usr/bin/killall kodi.bin_v8
 
 media_player:
   - platform: vlc

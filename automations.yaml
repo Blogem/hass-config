@@ -315,7 +315,7 @@
   - service: switch.turn_off
     entity_id: switch.zigbee2mqtt_main_join
 
-- id: Plafondlamp_bij_donker_lx
+- id: Plafondlamp_aan_bij_donker_lx
   alias: Plafondlamp aan als het donker is (lx)
   trigger:
     platform: numeric_state
@@ -330,7 +330,7 @@
     - condition: state
       entity_id: switch.woonkamer_plafond
       state: 'off'
-      for: '00:15:00'
+      for: '00:05:00'
     - condition: or
       conditions:
       - condition: state
@@ -360,7 +360,7 @@
     - condition: state
       entity_id: switch.woonkamer_plafond
       state: 'off'
-      for: '00:15:00'
+      for: '00:05:00'
     - condition: or
       conditions:
       - condition: state
@@ -405,7 +405,7 @@
 #  - service: switch.turn_on
 #    entity_id: switch.woonkamer_plafond
 #
-- id: Plafondlamp_bij_donker_keukenwerk
+- id: Plafondlamp_aan_bij_donker_keukenwerk
   alias: Plafondlamp aan als keukenwerk aan gaat en het donker is
   trigger:
     platform: state
@@ -430,7 +430,7 @@
   - service: switch.turn_on
     entity_id: switch.woonkamer_plafond
 
-- id: Plafondlamp_bij_licht_lx
+- id: Plafondlamp_uit_bij_licht_lx
   alias: Plafondlamp uit als het te licht is
   trigger:
     platform: numeric_state
@@ -445,7 +445,7 @@
   - service: switch.turn_off
     entity_id: switch.woonkamer_plafond
 
-- id: Platfondlamp_uit_timer
+- id: Plafondlamp_uit_timer
   alias: Plafondlamp uit als het te licht is (trigger = timer)
   trigger:
     platform: time_pattern
