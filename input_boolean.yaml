@@ -10,6 +10,9 @@ wakeup_weekend:
   
 radiator_woonkamer:
   name: "Radiator Woonkamer"
+
+radiator_woonkamer_disabled:
+  name: "Radiator woonkamer disabled"
   
 radiator_woonkamer_max:
   name: "Radiator Woonkamer Max"

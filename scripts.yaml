@@ -372,6 +372,9 @@ scene_uit:
 
 radiator_woonkamer_on:
   sequence:
+  - condition: state
+    entity_id: input_boolean.radiator_woonkamer_disabled
+    state: 'off'
   - service: mqtt.publish
     data_template:
       topic: zigbee2mqtt/0x00158d000192371a/set
@@ -390,7 +393,7 @@ radiator_woonkamer_off:
       topic: zigbee2mqtt/0x00158d000192371a/set
       payload: "{\"current_heating_setpoint\": 30}"
   - delay: '00:00:03'
-  - wait_template: "{{ state_attr('sensor.radiatorknop', 'pi_heating_demand')|int > 100 }}"
+  - wait_template: "{{ state_attr('climate.radiatorknop', 'pi_heating_demand')|int > 100 }}"
     timeout: '00:00:12'
     continue_on_timeout: 'true'
   - service: mqtt.publish
