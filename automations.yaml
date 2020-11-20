@@ -554,9 +554,12 @@
 - id: onkyo_start_playing_raspotify
   alias: Zet onkyo aan als Spotify op pi afspeelt
   trigger:
-    platform: state
-    entity_id: 'sensor.raspotify_playevent'
-    to: 'start'
+    - platform: state
+      entity_id: 'sensor.raspotify_playevent'
+      to: 'start'
+    - platform: state
+      entity_id: 'sensor.raspotify_playevent'
+      to: 'change'
   condition:
   - condition: state
     state: 'off'
@@ -826,8 +829,8 @@
   trigger:
     platform: state
     entity_id: binary_sensor.voordeur
-    from: 'on'
-    to: 'off'
+    from: 'off'
+    to: 'on'
   condition:
   - condition: state
     entity_id: person.jochem
@@ -846,8 +849,8 @@
   trigger:
     platform: state
     entity_id: binary_sensor.voordeur
-    from: 'on'
-    to: 'off'
+    from: 'off'
+    to: 'on'
   condition:
   - condition: state
     entity_id: person.jochem

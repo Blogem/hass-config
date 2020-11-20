@@ -67,6 +67,7 @@ spotify2pi_conditional:
       data:
         entity_id: media_player.spotify_jochem_van_leeuwen
         source: 'pi'
+    - delay: '00:00:01'
     - service: media_player.media_play
       data:
         entity_id: media_player.spotify_jochem_van_leeuwen
