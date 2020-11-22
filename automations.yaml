@@ -664,9 +664,12 @@
 - id: onkyo_stop_playing_raspotify
   alias: Zet onkyo uit als Spotify op pi uit gaat
   trigger:
-    platform: state
+  - platform: state
     entity_id: 'sensor.raspotify_playevent'
     to: 'stop'
+  - platform: state
+    entity_id: 'sensor.raspotify_playevent'
+    to: 'paused'
   condition:
     condition: and
     conditions:
