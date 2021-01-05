@@ -387,7 +387,7 @@ radiator_woonkamer_on:
 radiator_woonkamer_off:
   sequence:
   - condition: numeric_state
-    entity_id: sensor.radiatorknop_temperature_setpoint
+    entity_id: sensor.radiatorknop_heatingdemand
     above: 0
   - service: mqtt.publish
     data_template:

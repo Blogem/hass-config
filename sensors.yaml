@@ -3,13 +3,6 @@
   display_options:
     - 'time'
 
-# spotcast
-- platform: spotcast
-
-# usb temper
-- platform: temper
-  name: Woonkamer temperatuur
-
 # Zigbee2mqtt -  Sensor for monitoring the bridge state
 - platform: mqtt
   name: Zigbee2mqtt Bridge state
@@ -57,7 +50,7 @@
 
 - platform: command_line
   name: random_mp3
-  command: "find /home/homeassistant/mp3/new/ -type f -name '*.mp3' | shuf -n 1"
-- platform: command_line
-  name: random_flac
-  command: "find /home/homeassistant/mp3/new/ -type f -name '*.flac' | shuf -n 1"
+  command: "find /config/mp3/new/ -type f -name '*.mp3' | shuf -n 1"
+#- platform: command_line
+#  name: random_flac
+#  command: "find /config/mp3/new/ -type f -name '*.flac' | shuf -n 1"

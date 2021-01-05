@@ -46,9 +46,9 @@ mqtt:
 #  devices:
 #    5: Onkyo
 
-spotcast:
-  sp_dc: !secret sp_dc
-  sp_key: !secret sp_key
+#spotcast:
+#  sp_dc: !secret sp_dc
+#  sp_key: !secret sp_key
 
 spotify:
   client_id: !secret spotify_api_client_id
@@ -68,13 +68,14 @@ home_connect:
 shell_command:
   get_url: curl -X GET '{{ url }}'
   restart_raspotify: sudo systemctl restart raspotify.service
-  move_frameworkradio: mv '{{ states("sensor.random_mp3") }}' /home/homeassistant/mp3/played/
+  move_frameworkradio: mv '{{ states("sensor.random_mp3") }}' /config/mp3/played/
   touch: touch '{{ file }}'
   start_kodi: /usr/bin/kodi &
   stop_kodi: /usr/bin/killall kodi.bin_v8
 
-media_player:
-  - platform: vlc
+#tmp off 20201223
+#media_player:
+#  - platform: vlc
 
 # ZIGBEE2MQTT
 # Input select for Zigbee2mqtt debug level
@@ -137,9 +138,9 @@ timer:
 # keep track of new mp3s for alarm clock
 homeassistant:
   allowlist_external_dirs:
-    - /home/homeassistant/mp3/played/
+    - /config/mp3/played/
 
 folder_watcher:
-  - folder: /home/homeassistant/mp3/played/
+  - folder: /config/mp3/played/
     patterns:
       - '*.mp3'

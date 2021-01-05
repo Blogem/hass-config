@@ -185,16 +185,26 @@
   trigger:
   - platform: webhook
     webhook_id: !secret webhook_tasker_nachtlicht
-#  condition:
-#  - condition: state
-#    state: 'off'
-#    entity_id: group.all_lights
   condition:
+  # alleen als er geen lampen aan staan
   - condition: template
     value_template: >
       {{ states.light | count == states.light | selectattr('state','eq','off') | list | count }}
+  # alleen als ik thuis wakker word
+  - condition: state
+    entity_id: person.jochem
+    state: home
   action:
   - service: script.scene_nachtlicht
+
+- id: 'tasker_radiatoraan'
+  alias: Tasker Radiator aan
+  trigger:
+  - platform: webhook
+    webhook_id: !secret webhook_tasker_radiatoraan
+  action:
+  - service: script.turn_on
+    entity_id: script.radiator_woonkamer_on
 
 - id: 'tasker_radiatoruit'
   alias: Tasker Radiator uit
@@ -239,8 +249,9 @@
     data:
       transition: 1800
       brightness: 240
-  - delay: 00:05:00
-  - service: shell_command.move_frameworkradio
+  # onderstaande was voor de wekkerradio. uitgeschakeld.
+  # - delay: 00:05:00
+  # - service: shell_command.move_frameworkradio
   id: 47d31d79b0e1410b8c4f5cb311dc92dd
 
 - alias: Alarm clock

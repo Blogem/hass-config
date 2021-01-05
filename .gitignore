@@ -15,3 +15,5 @@ custom_components/frameworkradiodownloader/*.tmp
 deps/
 themes/
 tts/
+mp3/
+core

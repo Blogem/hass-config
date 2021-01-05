@@ -1,5 +1,5 @@
 // based on script by Ich-Eben: https://github.com/dtcooper/raspotify/issues/171#issuecomment-507423901
-// add this to /etc/default/raspotify: OPTIONS="--onevent 'node /home/homeassistant/.homeassistant/custom_components/raspotify/main.js'"
+// add this to /etc/default/raspotify: OPTIONS="--onevent 'node /home/homeassistant/hass-config/custom_components/raspotify/main.js'"
 // install mqtt in same dir as this script: npm install mqtt --save
 
 var mqtt = require('mqtt');
