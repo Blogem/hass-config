@@ -73,9 +73,11 @@ shell_command:
   start_kodi: /usr/bin/kodi &
   stop_kodi: /usr/bin/killall kodi.bin_v8
 
-#tmp off 20201223
-#media_player:
-#  - platform: vlc
+media_player:
+  - platform: vlc_telnet
+    host: internalpi.troep.net
+    port: 4212
+    password: !secret vlc_telnet
 
 # ZIGBEE2MQTT
 # Input select for Zigbee2mqtt debug level
