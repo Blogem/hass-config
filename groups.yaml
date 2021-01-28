@@ -29,5 +29,6 @@ scenes_for_remote:
     - script.scene_avond
     - script.scene_avond2
     - script.scene_relax
+    - script.scene_relax2
     - script.scene_nachtlicht
     - script.scene_uit

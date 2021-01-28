@@ -316,6 +316,36 @@ scene_relax:
       entity_id: input_number.cntr_scenes
       data:
         value: 3
+scene_relax2:
+  sequence:
+    - service: script.turn_on
+      entity_id: script.turn_on_ikea_light_rgb_color
+      data:
+        variables:
+          entity_id: light.av_meubel
+          brightness_pct: 1
+          r: 255
+          g: 96
+          b: 0
+    - service: switch.turn_off
+      entity_id: switch.keuken_sfeer
+    - service: switch.turn_off
+      entity_id: switch.woonkamer_plafond
+    - service: switch.turn_on
+      entity_id: switch.av_tafellamp
+    - service: light.turn_off
+      data_template:
+        entity_id: light.keuken_werk
+    - service: light.turn_off
+      data_template:
+        entity_id: light.livingcolors
+    - service: light.turn_off
+      data_template:
+        entity_id: light.bureau
+    - service: input_number.set_value
+      entity_id: input_number.cntr_scenes
+      data:
+        value: 4
 scene_nachtlicht:
   sequence:
     - service: script.turn_on
@@ -345,7 +375,7 @@ scene_nachtlicht:
     - service: input_number.set_value
       entity_id: input_number.cntr_scenes
       data:
-        value: 4
+        value: 5
 scene_uit:
   sequence:
     - service: light.turn_off
@@ -369,7 +399,7 @@ scene_uit:
     - service: input_number.set_value
       entity_id: input_number.cntr_scenes
       data:
-        value: 5
+        value: 6
 
 radiator_woonkamer_on:
   sequence:

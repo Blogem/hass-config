@@ -172,6 +172,14 @@
   action:
   - service: script.scene_relax
 
+- id: 'tasker_scenerelax2'
+  alias: Tasker Scene Relax2
+  trigger:
+  - platform: webhook
+    webhook_id: !secret webhook_tasker_scenerelax2
+  action:
+  - service: script.scene_relax2
+
 - id: 'tasker_scenenachtlicht'
   alias: Tasker Scene Nachtlicht
   trigger:
